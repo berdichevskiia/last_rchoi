@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Библиотека</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>📖 Онлайн Библиотека</h1>
+        <nav>
+            <a href="#">Главная</a>
+            <a href="#">Мои книги</a>
+            <a href="#">О нас</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="search-filter">
+            <input type="text" id="searchInput" placeholder="Поиск по названию или автору...">
+            <select id="genreFilter">
+                <option value="all">Все жанры</option>
+                <option value="fantasy">Фантастика</option>
+                <option value="thriller">Триллер</option>
+                <option value="history">История</option>
+            </select>
+            <button onclick="filterBooks()">Найти</button>
+        </section>
+
+        <section id="bookList" class="book-grid">
+            <h2>Доступные книги</h2>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Онлайн Библиотека</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
