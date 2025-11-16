@@ -3,37 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Библиотека — современный демо</title>
-  <meta name="description" content="Современный статический сайт библиотеки с симуляцией выдачи книг, записью на события, экспортом и мобильным меню." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>BiBlio · Современная библиотека</title>
+  <meta name="description" content="Современный цифровой интерфейс библиотеки. Никаких выезжающих меню — только плавные, интуитивные взаимодействия." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ===== СОВРЕМЕННЫЕ СТИЛИ (обновлённые) ===== */
+    /* ===== ULTRA-MODERN STYLES — glass + neumorphism fusion ===== */
     :root {
-      --bg: #fafafa;
-      --bg-alt: #f4f4f5;
-      --card: #ffffff;
-      --text: #18181b;
-      --text-muted: #71717a;
-      --accent: #4f46e5; /* indigo-600 */
-      --accent-hover: #4338ca;
-      --danger: #ef4444;
-      --success: #16a34a;
-      --border: #e4e4e7;
-      --radius: 16px;
-      --shadow-sm: 0 2px 6px rgba(0,0,0,0.03);
-      --shadow-md: 0 6px 16px rgba(0,0,0,0.06);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
-      --transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+      --spacing-xs: 4px;
+      --spacing-s: 8px;
+      --spacing-m: 16px;
+      --spacing-l: 24px;
+      --spacing-xl: 32px;
+      --radius-s: 8px;
+      --radius-m: 12px;
+      --radius-l: 16px;
+      
+      /* Градиенты по времени суток (утро → день → вечер) */
+      --bg-gradient: linear-gradient(120deg, oklch(98% 0.005 220), oklch(99% 0.008 260));
+      --card-bg: oklch(100% 0 0 / 85%);
+      --card-bg-dark: oklch(15% 0.005 240 / 88%);
+      --text: oklch(18% 0.02 240);
+      --text-muted: oklch(40% 0.01 240);
+      --border: oklch(85% 0.01 240 / 40%);
+      --accent: oklch(65% 0.2 260); /* сине-фиолетовый, мягкий */
+      --accent-hover: oklch(60% 0.22 260);
+      --success: oklch(60% 0.18 140);
+      --danger: oklch(65% 0.2 20);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0f0f0f;
-        --bg-alt: #181818;
-        --card: #1e1e1e;
-        --text: #e4e4e7;
-        --text-muted: #a1a1aa;
-        --border: #3f3f46;
+        --bg-gradient: linear-gradient(120deg, oklch(10% 0.008 240), oklch(12% 0.012 260));
+        --text: oklch(95% 0.01 240);
+        --text-muted: oklch(70% 0.008 240);
+        --border: oklch(30% 0.01 240 / 30%);
       }
     }
 
@@ -41,289 +46,290 @@
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: var(--bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
       color: var(--text);
       line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: var(--spacing-l);
     }
 
-    /* ===== HEADER (с гамбургером) ===== */
+    /* ===== HEADER — glass panel, no motion ===== */
     header {
-      background: linear-gradient(90deg, #818cf8, #4f46e5);
-      color: white;
-      padding: 20px 0;
+      background: var(--card-bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-l);
+      padding: var(--spacing-l);
+      margin-bottom: var(--spacing-xl);
+      box-shadow: 
+        0 4px 20px oklch(0% 0 0 / 0.02),
+        0 0 0 1px oklch(100% 0 0 / 0.05);
+    }
+    @media (prefers-color-scheme: dark) {
+      header {
+        background: var(--card-bg-dark);
+        box-shadow: 
+          0 4px 20px oklch(0% 0 0 / 0.2),
+          0 0 0 1px oklch(0% 0 0 / 0.1);
+      }
     }
 
-    .header-content {
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: var(--spacing-m);
     }
 
     .logo {
+      font-weight: 700;
       font-size: 1.5rem;
-      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: var(--spacing-xs);
+      background: linear-gradient(90deg, var(--accent), oklch(70% 0.15 280));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-    .nav-links a {
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.2s;
-    }
-    .nav-links a:hover {
-      opacity: 1;
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 28px;
-      height: 20px;
-      cursor: pointer;
-    }
-    .hamburger span {
-      display: block;
-      height: 3px;
-      width: 100%;
-      background: white;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-
+    /* Статистика — микро-бары */
     .stats {
       display: flex;
-      gap: 16px;
-      margin-top: 12px;
-      font-size: 0.875rem;
-      opacity: 0.9;
+      gap: var(--spacing-l);
+      flex-wrap: wrap;
     }
     .stat {
       display: flex;
-      align-items: center;
-      gap: 4px;
+      flex-direction: column;
+      min-width: 140px;
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-xs);
     }
     .stat-value {
       font-weight: 600;
+      font-size: 1.25rem;
     }
-
-    @media (max-width: 767px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .stats { justify-content: center; margin-top: 16px; }
-      header { padding: 16px 0; }
+    .stat-bar {
+      height: 4px;
+      background: oklch(90% 0.01 240 / 0.3);
+      border-radius: 2px;
+      margin-top: var(--spacing-xs);
+      overflow: hidden;
     }
-
-    /* ===== OFF-CANVAS MENU ===== */
-    #mobileMenu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+    .stat-fill {
       height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
-    }
-    #mobileMenu.open {
-      opacity: 1;
-      visibility: visible;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
-    .menu-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 280px;
-      height: 100%;
-      background: var(--card);
-      box-shadow: -4px 0 24px rgba(0,0,0,0.1);
-      padding: 24px 0;
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
-    }
-    #mobileMenu.open .menu-panel {
-      transform: translateX(0);
-    }
-
-    .menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 24px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-    .close-menu {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .menu-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .menu-links li {
-      padding: 0 24px;
-    }
-    .menu-links a {
-      display: block;
-      padding: 12px 0;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 500;
-      border-bottom: 1px solid var(--border);
-    }
-    .menu-links a:last-child { border-bottom: none; }
-
-    .menu-actions {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+    /* ===== MAIN GRID ===== */
     main {
-      padding: 32px 0 64px;
-    }
-
-    .grid {
       display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 24px;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-l);
     }
     @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
+      main { grid-template-columns: 1fr; }
     }
 
+    /* ===== CARDS — glass neumorphism ===== */
     .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow-md);
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
+      border-radius: var(--radius-m);
+      padding: var(--spacing-l);
+      box-shadow: 
+        0 2px 12px oklch(0% 0 0 / 0.01),
+        0 0 0 1px oklch(100% 0 0 / 0.03);
+    }
+    @media (prefers-color-scheme: dark) {
+      .card {
+        background: var(--card-bg-dark);
+        box-shadow: 
+          0 2px 12px oklch(0% 0 0 / 0.1),
+          inset 0 0.5px 0 oklch(100% 0 0 / 0.05);
+      }
     }
 
-    h1, h2, h3 {
-      font-weight: 600;
-      margin: 0 0 12px;
+    h2 {
+      font-weight: 700;
+      font-size: 1.375rem;
+      margin: 0 0 var(--spacing-m);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-s);
     }
-    h1 { font-size: 2.25rem; }
-    h2 { font-size: 1.25rem; }
-    h3 { font-size: 1.125rem; }
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 24px;
+      border-radius: 3px;
+      background: var(--accent);
+    }
 
-    .text-muted { color: var(--text-muted); font-size: 0.875rem; }
+    .text-muted {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin: 0 0 var(--spacing-m);
+    }
 
+    /* ===== FILTERS — iOS-style segmented control ===== */
+    .filters {
+      display: flex;
+      gap: var(--spacing-s);
+      margin-bottom: var(--spacing-l);
+    }
+    .filter-btn {
+      flex: 1;
+      padding: var(--spacing-s) var(--spacing-m);
+      background: oklch(95% 0 0 / 60%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-s);
+      font: inherit;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    @media (prefers-color-scheme: dark) {
+      .filter-btn { background: oklch(20% 0 0 / 40%); }
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* ===== INPUTS — clean, no borders by default ===== */
     .input-group {
       display: flex;
-      gap: 12px;
-      margin-top: 16px;
+      gap: var(--spacing-s);
+      margin-bottom: var(--spacing-l);
     }
-    input, select, textarea, button {
-      font-family: inherit;
-      font-size: 1rem;
+    input, select, button {
+      font: inherit;
     }
     input, select {
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
+      flex: 1;
+      padding: var(--spacing-m);
+      border-radius: var(--radius-s);
+      border: 1px solid transparent;
+      background: oklch(98% 0 0 / 70%);
       color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    @media (prefers-color-scheme: dark) {
+      input, select { background: oklch(20% 0 0 / 50%); }
     }
     input:focus, select:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      background: var(--card-bg);
     }
 
+    /* ===== BOOK ITEMS — Apple Books style ===== */
+    .book-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-m);
+    }
     .book {
       display: flex;
-      gap: 16px;
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      margin-bottom: 12px;
-      background: rgba(255,255,255,0.4);
-      backdrop-filter: blur(4px);
-      transition: var(--transition);
+      gap: var(--spacing-m);
+      padding: var(--spacing-m);
+      border-radius: var(--radius-s);
+      background: oklch(97% 0 0 / 50%);
+      transition: transform 0.2s;
+      cursor: default;
     }
     @media (prefers-color-scheme: dark) {
-      .book { background: rgba(30,30,30,0.6); }
+      .book { background: oklch(22% 0 0 / 40%); }
     }
     .book:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
     }
 
+    /* Генеративные обложки — уникальные градиенты по ID */
     .cover {
-      flex: 0 0 56px;
-      height: 78px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+      width: 72px;
+      height: 100px;
+      border-radius: var(--radius-s);
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      color: #312e81;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-    }
-    @media (prefers-color-scheme: dark) {
-      .cover { background: linear-gradient(135deg, #1e293b, #334155); color: #cbd5e1; }
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
 
-    .meta h4 {
-      font-weight: 600;
-      margin: 0 0 6px;
-      font-size: 1.05rem;
+    .meta {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    .meta p { margin: 0; color: var(--text-muted); }
-
-    .pill {
-      display: inline-block;
-      padding: 4px 10px;
+    .title {
+      font-weight: 600;
+      font-size: 1.125rem;
+      margin: 0 0 var(--spacing-xs);
+    }
+    .details {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      display: flex;
+      gap: 8px;
+    }
+    .genre-pill {
+      padding: 2px 8px;
       border-radius: 999px;
-      background: #f1f5f9;
-      color: #334155;
-      font-weight: 500;
+      background: oklch(90% 0 0 / 40%);
       font-size: 0.75rem;
+      font-weight: 600;
     }
     @media (prefers-color-scheme: dark) {
-      .pill { background: #334155; color: #cbd5e1; }
+      .genre-pill { background: oklch(30% 0 0 / 50%); }
     }
 
+    /* Кнопки — pseudo-3D effect */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: 12px;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-s) var(--spacing-m);
+      border-radius: var(--radius-s);
       font-weight: 500;
       border: none;
       cursor: pointer;
-      transition: var(--transition);
-      user-select: none;
+      transition: all 0.15s ease;
+      box-shadow: 
+        inset 0 -2px 0 oklch(0% 0 0 / 0.1),
+        0 1px 2px oklch(0% 0 0 / 0.05);
+    }
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 
+        inset 0 1px 0 oklch(0% 0 0 / 0.1),
+        0 0 1px oklch(0% 0 0 / 0.05);
     }
     .btn-primary {
       background: var(--accent);
@@ -331,541 +337,432 @@
     }
     .btn-primary:hover:not(:disabled) {
       background: var(--accent-hover);
-      transform: scale(1.02);
     }
-    .btn-primary:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid var(--border);
+    .btn-secondary {
+      background: oklch(95% 0 0 / 80%);
       color: var(--text);
     }
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 20px 0;
-    }
-
-    /* Toast */
-    #toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 1000;
-      max-width: 320px;
-      padding: 14px 18px;
-      border-radius: 12px;
-      background: var(--text);
-      color: white;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #toast.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-    #toast .icon {
-      font-size: 18px;
-    }
-
-    /* Skeleton */
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-      background-size: 200% 100%;
-      animation: loading 1.2s infinite;
-      border-radius: 8px;
-    }
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
     @media (prefers-color-scheme: dark) {
-      .skeleton { background: linear-gradient(90deg, #2a2a2a, #3a3a3a, #2a2a2a); }
+      .btn-secondary { background: oklch(25% 0 0 / 60%); }
+    }
+    .btn-danger {
+      background: oklch(95% 0 0 / 80%);
+      color: var(--danger);
     }
 
-    .skel-item {
-      height: 78px;
-      margin-bottom: 12px;
+    /* Акцентные действия — инлайн, сверху */
+    .actions {
+      display: flex;
+      gap: var(--spacing-s);
+      margin-bottom: var(--spacing-l);
+      flex-wrap: wrap;
+    }
+
+    /* Список записей — компактный */
+    .event-item, .borrowed-item {
+      font-size: 0.875rem;
+      padding: var(--spacing-s) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .event-item:last-child, .borrowed-item:last-child {
+      border-bottom: none;
     }
 
     footer {
       text-align: center;
-      padding: 32px 20px;
+      padding: var(--spacing-xl) var(--spacing-l);
       color: var(--text-muted);
       font-size: 0.875rem;
     }
     code {
-      background: var(--bg-alt);
+      background: oklch(90% 0 0 / 50%);
       padding: 2px 6px;
-      border-radius: 6px;
+      border-radius: 4px;
       font-family: monospace;
     }
 
-    /* Focus for keyboard users */
-    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+    /* Focus для доступности */
+    button:focus-visible, input:focus-visible, select:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
+
+    /* Генеративные обложки — CSS-only */
+    .cover-1 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    .cover-2 { background: linear-gradient(135deg, #ec4899, #be185d); }
+    .cover-3 { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+    .cover-4 { background: linear-gradient(135deg, #10b981, #059669); }
+    .cover-5 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .cover-6 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .cover-7 { background: linear-gradient(135deg, #0891b2, #0e7490); }
   </style>
 </head>
 <body>
-  <!-- 📱 Off-canvas menu -->
-  <div id="mobileMenu">
-    <div class="menu-panel">
-      <div class="menu-header">
-        <span class="logo">📚 Библиотека</span>
-        <button class="close-menu" id="closeMenu">&times;</button>
-      </div>
-      <ul class="menu-links">
-        <li><a href="#catalog">Каталог</a></li>
-        <li><a href="#account">Моя карточка</a></li>
-        <li><a href="#events">События</a></li>
-        <li><a href="#recs">Рекомендации</a></li>
-      </ul>
-      <div class="menu-actions">
-        <button class="btn btn-primary" id="exportBtn">📤 Экспорт данных</button>
-        <label class="btn btn-ghost" style="cursor: pointer;">
-          📤 Импорт данных
-          <input type="file" id="importInput" accept=".json" style="display: none;">
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">📚 Библиотека</div>
-        <nav class="nav-links">
-          <a href="#catalog">Каталог</a>
-          <a href="#account">Карточка</a>
-          <a href="#events">События</a>
-          <a href="#recs">Рекомендации</a>
-        </nav>
-        <button class="hamburger" id="openMenu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="logo">BiBlio</div>
+        <div class="actions">
+          <button class="btn btn-secondary" id="exportBtn">📤 Экспорт</button>
+          <label class="btn btn-secondary" style="cursor: pointer;">
+            📤 Импорт
+            <input type="file" id="importInput" accept=".json" style="display: none;">
+          </label>
+        </div>
       </div>
       <div class="stats">
         <div class="stat">
-          <span>Книг:</span>
+          <span class="stat-label">Всего книг</span>
           <span class="stat-value" id="stat-total">7</span>
+          <div class="stat-bar"><div class="stat-fill" id="fill-total" style="width: 100%"></div></div>
         </div>
         <div class="stat">
-          <span>Выдано:</span>
+          <span class="stat-label">Выдано</span>
           <span class="stat-value" id="stat-borrowed">0</span>
+          <div class="stat-bar"><div class="stat-fill" id="fill-borrowed" style="width: 0%"></div></div>
         </div>
         <div class="stat">
-          <span>Записей:</span>
+          <span class="stat-label">Записей</span>
           <span class="stat-value" id="stat-events">0</span>
+          <div class="stat-bar"><div class="stat-fill" id="fill-events" style="width: 0%"></div></div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="container">
-    <div class="grid">
-      <section class="card" id="catalog">
-        <h2>1. Каталог и поиск</h2>
-        <p class="text-muted">Найдите книгу по названию, автору или жанру.</p>
-        <div class="input-group">
-          <input id="searchInput" type="text" placeholder="Название, автор или жанр…" autocomplete="off" />
-          <select id="genreFilter" style="width: 160px;">
-            <option value="">Все жанры</option>
-          </select>
+    <main>
+      <section class="card">
+        <h2>Каталог</h2>
+        <p class="text-muted">Найдите книгу. Фильтруйте по жанру или ищите по названию.</p>
+
+        <div class="filters">
+          <button class="filter-btn active" data-genre="">Все</button>
+          <button class="filter-btn" data-genre="Классика">Классика</button>
+          <button class="filter-btn" data-genre="Современная проза">Проза</button>
+          <button class="filter-btn" data-genre="Техническая литература">Техника</button>
         </div>
-        <div id="booksList" style="margin-top: 20px;">
-          <div class="skeleton skel-item"></div>
-          <div class="skeleton skel-item"></div>
-          <div class="skeleton skel-item"></div>
+
+        <div class="input-group">
+          <input type="text" id="searchInput" placeholder="Поиск по названию или автору…" autocomplete="off">
+        </div>
+
+        <div class="book-list" id="booksList">
+          <!-- Книги рендерятся сюда -->
         </div>
       </section>
 
-      <aside class="card">
-        <div id="account">
-          <h3>2. Моя карточка</h3>
-          <p class="text-muted">Симуляция выдачи и возврата книг. Данные хранятся в вашем браузере.</p>
-          <div style="display: flex; gap: 10px; margin-top: 16px;">
-            <button id="viewBorrowedBtn" class="btn btn-ghost">Мои книги</button>
-            <button id="clearBorrowed" class="btn btn-ghost" style="color: var(--danger);">Очистить</button>
+      <aside>
+        <div class="card">
+          <h2>Моя карточка</h2>
+          <p class="text-muted">Выданные книги и записи на события.</p>
+
+          <div class="actions">
+            <button class="btn btn-secondary" id="viewBorrowedBtn">Книги</button>
+            <button class="btn btn-danger" id="clearBorrowed">Очистить</button>
           </div>
-          <div id="borrowedList" style="margin-top: 20px;">
-            <p class="text-muted">У вас пока нет выданных книг.</p>
+
+          <div id="borrowedList">
+            <p class="text-muted">У вас нет выданных книг.</p>
           </div>
         </div>
 
-        <div class="divider"></div>
+        <div class="card" style="margin-top: var(--spacing-l);">
+          <h2>Рекомендации</h2>
+          <p class="text-muted">Выберите жанр — и получите подборку.</p>
 
-        <div id="events">
-          <h3>3. События</h3>
-          <p class="text-muted">Запишитесь на интересное мероприятие.</p>
-          <form id="eventForm" style="margin-top: 12px;">
-            <input id="visitorName" type="text" placeholder="Имя" required />
-            <select id="eventSelect" style="margin-top: 12px; width: 100%;">
-              <option>Авторская встреча: «Современная проза» — 2025-12-01</option>
-              <option>Детский час: мастер-класс — 2025-12-05</option>
-              <option>Лекция: История книги — 2026-01-15</option>
+          <div class="input-group">
+            <select id="recGenre">
+              <option value="Классика">Классика</option>
+              <option value="Современная проза">Современная проза</option>
+              <option value="Приключения">Приключения</option>
+              <option value="Техническая литература">Техника</option>
             </select>
-            <div style="display: flex; gap: 10px; margin-top: 16px;">
-              <button type="submit" class="btn btn-primary">Записаться</button>
-              <button id="viewEvents" type="button" class="btn btn-ghost">Мои записи</button>
-            </div>
-          </form>
-          <div id="eventList" style="margin-top: 16px;"></div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div id="recs">
-          <h3>4. Рекомендации</h3>
-          <p class="text-muted">Выберите жанр — и мы подберём книгу.</p>
-          <div style="display: flex; gap: 10px; margin-top: 12px;">
-            <select id="recGenre" style="flex: 1;"></select>
-            <button id="getRec" class="btn btn-primary">Подобрать</button>
+            <button class="btn btn-primary" id="getRec">Подобрать</button>
           </div>
-          <div id="recResult" style="margin-top: 16px;"></div>
+
+          <div id="recResult"></div>
         </div>
       </aside>
-    </div>
-  </main>
+    </main>
 
-  <footer>
-    <div class="container">
-      ✅ Готово к публикации на <strong>GitHub Pages</strong>: переименуйте в <code>index.html</code> и загрузите в репозиторий.
-    </div>
-  </footer>
-
-  <!-- Toast -->
-  <div id="toast" role="alert" aria-live="polite">
-    <span class="icon">✅</span>
-    <span id="toast-text">Сообщение</span>
+    <footer>
+      BiBlio · Демо-библиотека. Все данные хранятся только в вашем браузере.  
+      <br>Для GitHub Pages: сохраните как <code>index.html</code>.
+    </footer>
   </div>
 
   <script>
-    // === Данные ===
-    const sampleBooks = [
+    // Данные
+    const books = [
       {id:1,title:'Мастер и Маргарита',author:'М. Булгаков',genre:'Классика',year:1967},
       {id:2,title:'Преступление и наказание',author:'Ф. Достоевский',genre:'Классика',year:1866},
       {id:3,title:'Норвежский лес',author:'Х. Мураками',genre:'Современная проза',year:1987},
       {id:4,title:'Чудный остров',author:'Жюль Верн',genre:'Приключения',year:1874},
       {id:5,title:'Чистый код',author:'Р. Мартин',genre:'Техническая литература',year:2008},
       {id:6,title:'Приключения Тома Сойера',author:'М. Твен',genre:'Классика',year:1876},
-      {id:7,title:'Алгоритмы: построение и анализ',author:'Т. Кормен',genre:'Техническая литература',year:2009}
+      {id:7,title:'Алгоритмы',author:'Т. Кормен',genre:'Техническая литература',year:2009}
     ];
 
-    const BORROW_KEY = 'lib_borrowed_v3';
-    const EVENT_KEY = 'lib_events_v3';
+    // Keys
+    const BORROW_KEY = 'biblio_borrowed';
+    const EVENTS_KEY = 'biblio_events';
 
-    // === DOM elements ===
+    // DOM
     const booksList = document.getElementById('booksList');
     const searchInput = document.getElementById('searchInput');
-    const genreFilter = document.getElementById('genreFilter');
     const recGenre = document.getElementById('recGenre');
     const recResult = document.getElementById('recResult');
     const borrowedList = document.getElementById('borrowedList');
     const viewBorrowedBtn = document.getElementById('viewBorrowedBtn');
     const clearBorrowed = document.getElementById('clearBorrowed');
-    const eventForm = document.getElementById('eventForm');
-    const eventList = document.getElementById('eventList');
-    const viewEvents = document.getElementById('viewEvents');
-    const toast = document.getElementById('toast');
-    const toastText = document.getElementById('toast-text');
-
-    // === Статистика ===
+    const exportBtn = document.getElementById('exportBtn');
+    const importInput = document.getElementById('importInput');
     const statTotal = document.getElementById('stat-total');
     const statBorrowed = document.getElementById('stat-borrowed');
     const statEvents = document.getElementById('stat-events');
+    const fillBorrowed = document.getElementById('fill-borrowed');
+    const fillEvents = document.getElementById('fill-events');
 
-    // === Меню ===
-    const mobileMenu = document.getElementById('mobileMenu');
-    const openMenu = document.getElementById('openMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const exportBtn = document.getElementById('exportBtn');
-    const importInput = document.getElementById('importInput');
+    // Утилиты
+    const escape = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'<','>':'>','"':'&quot;',"'":"&#39;"})[m]);
 
-    // === Утилиты ===
-    const escapeHtml = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'<','>':'>','"':'&quot;',"'":"&#39;"})[m]);
+    // Генерация обложки (буквы + класс)
+    const getCoverClass = id => `cover-${((id - 1) % 7) + 1}`;
+    const getCoverLetters = title => title.split(' ').slice(0,2).map(w => w[0]?.toUpperCase() || '').join('');
 
-    const showToast = (msg, type = 'success') => {
-      toastText.textContent = msg;
-      toast.querySelector('.icon').textContent = type === 'success' ? '✅' : '⚠️';
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
-    };
-
-    // === Инициализация меню ===
-    openMenu?.addEventListener('click', () => {
-      mobileMenu.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-    closeMenu?.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-    mobileMenu?.addEventListener('click', (e) => {
-      if (e.target === mobileMenu) {
-        mobileMenu.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    });
-
-    // === Жанры ===
-    const uniqueGenres = arr => [...new Set(arr.map(b => b.genre))].sort();
-    const genres = uniqueGenres(sampleBooks);
-
-    const initGenreSelects = () => {
-      genres.forEach(g => {
-        const opt1 = new Option(g, g); genreFilter.appendChild(opt1);
-        const opt2 = new Option(g, g); recGenre.appendChild(opt2);
-      });
-      if (recGenre.options.length) recGenre.selectedIndex = 0;
-    };
-
-    // === Обновление статистики ===
-    const updateStats = () => {
-      statTotal.textContent = sampleBooks.length;
-      const borrowed = getBorrowed().length;
-      const events = getEvents().length;
-      statBorrowed.textContent = borrowed;
-      statEvents.textContent = events;
-    };
-
-    // === Рендер книг ===
-    const renderBooks = (query = '', genre = '') => {
-      const q = query.trim().toLowerCase();
-      const filtered = sampleBooks.filter(b => {
-        if (genre && b.genre !== genre) return false;
-        if (!q) return true;
-        return (b.title + ' ' + b.author + ' ' + b.genre).toLowerCase().includes(q);
-      });
-
-      booksList.innerHTML = '';
-      if (filtered.length === 0) {
-        booksList.innerHTML = `<p class="text-muted">Книг не найдено.</p>`;
-        return;
-      }
-
-      filtered.forEach((b, idx) => {
-        const coverLetters = b.title.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() || '').join('');
-        const div = document.createElement('div');
-        div.className = 'book';
-        div.style.animationDelay = `${idx * 60}ms`;
-        div.style.opacity = '0';
-        div.style.animation = 'fadeUp 0.4s forwards';
-        div.innerHTML = `
-          <div class="cover">${coverLetters || '??'}</div>
+    // Рендер книги
+    const renderBook = (b, isBorrowed = false) => {
+      const coverClass = getCoverClass(b.id);
+      const letters = getCoverLetters(b.title);
+      const btnText = isBorrowed ? 'Вернуть' : 'Выдать';
+      const btnClass = isBorrowed ? 'btn-danger' : 'btn-primary';
+      return `
+        <div class="book">
+          <div class="cover ${coverClass}">${letters}</div>
           <div class="meta">
-            <h4>${escapeHtml(b.title)}</h4>
-            <p>${escapeHtml(b.author)} • ${b.year} • <span class="pill">${b.genre}</span></p>
+            <div class="title">${escape(b.title)}</div>
+            <div class="details">
+              <span>${escape(b.author)}</span> • 
+              <span>${b.year}</span> • 
+              <span class="genre-pill">${b.genre}</span>
+            </div>
           </div>
-          <div>
-            <button data-id="${b.id}" class="btn btn-primary borrowBtn">Выдать</button>
-          </div>`;
-        booksList.appendChild(div);
-        setTimeout(() => div.style.opacity = '1', 50 + idx * 30);
-      });
+          <button class="btn ${btnClass} action-btn" data-id="${b.id}" data-action="${isBorrowed ? 'return' : 'borrow'}">
+            ${btnText}
+          </button>
+        </div>
+      `;
+    };
 
-      document.querySelectorAll('.borrowBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
+    // Рендер списка
+    const renderBooks = (list = books) => {
+      booksList.innerHTML = list.map(b => renderBook(b)).join('');
+      attachHandlers();
+    };
+
+    // Обработчики кнопок
+    const attachHandlers = () => {
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.onclick = () => {
           const id = +btn.dataset.id;
-          toggleBorrow(id);
-          btn.textContent = '✓';
-          btn.disabled = true;
-          setTimeout(() => {
-            btn.textContent = 'Выдать';
-            btn.disabled = false;
-          }, 800);
-        });
+          const action = btn.dataset.action;
+          if (action === 'borrow') {
+            borrowBook(id);
+          } else {
+            returnBook(id);
+          }
+        };
       });
     };
 
-    // Анимация
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // === Выдача/возврат ===
+    // Выдача/возврат
     const getBorrowed = () => JSON.parse(localStorage.getItem(BORROW_KEY) || '[]');
     const setBorrowed = arr => {
       localStorage.setItem(BORROW_KEY, JSON.stringify(arr));
       updateStats();
     };
 
-    const toggleBorrow = id => {
+    const borrowBook = id => {
       const arr = getBorrowed();
-      const idx = arr.indexOf(id);
-      if (idx === -1) {
+      if (!arr.includes(id)) {
         arr.push(id);
         setBorrowed(arr);
         showToast('Книга выдана');
-      } else {
-        arr.splice(idx, 1);
-        setBorrowed(arr);
-        showToast('Книга возвращена');
       }
-      renderBorrowed();
     };
 
+    const returnBook = id => {
+      let arr = getBorrowed();
+      arr = arr.filter(x => x !== id);
+      setBorrowed(arr);
+      showToast('Книга возвращена');
+    };
+
+    // Показ выданных
     const renderBorrowed = () => {
       const ids = getBorrowed();
       if (!ids.length) {
         borrowedList.innerHTML = `<p class="text-muted">У вас нет выданных книг.</p>`;
         return;
       }
-      const books = ids.map(id => sampleBooks.find(b => b.id === id)).filter(Boolean);
-      borrowedList.innerHTML = books.map(b => `
-        <div class="book" style="animation: none; opacity: 1;">
-          <div class="cover">${b.title.split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('')}</div>
+      const list = ids.map(id => books.find(b => b.id === id)).filter(Boolean);
+      borrowedList.innerHTML = list.map(b => `
+        <div class="book" style="padding:8px 12px;">
+          <div class="cover ${getCoverClass(b.id)}" style="width:48px;height:64px;font-size:14px;">${getCoverLetters(b.title)}</div>
           <div class="meta">
-            <h4>${escapeHtml(b.title)}</h4>
-            <p>${escapeHtml(b.author)} • ${b.year}</p>
+            <div class="title" style="font-size:0.95rem;">${escape(b.title)}</div>
+            <div class="details" style="font-size:0.75rem;">
+              <span>${escape(b.author)}</span>
+            </div>
           </div>
-          <div><button data-id="${b.id}" class="btn btn-ghost returnBtn" style="color: var(--danger);">Вернуть</button></div>
+          <button class="btn btn-danger action-btn" data-id="${b.id}" data-action="return" style="padding:4px 10px;font-size:0.8rem;">Вернуть</button>
         </div>
       `).join('');
-      document.querySelectorAll('.returnBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = +btn.dataset.id;
-          toggleBorrow(id);
-        });
-      });
+      attachHandlers();
     };
 
-    // === События ===
-    const getEvents = () => JSON.parse(localStorage.getItem(EVENT_KEY) || '[]');
+    // Статистика
+    const updateStats = () => {
+      const total = books.length;
+      const borrowed = getBorrowed().length;
+      const events = getEvents().length;
+      
+      statTotal.textContent = total;
+      statBorrowed.textContent = borrowed;
+      statEvents.textContent = events;
+      
+      fillBorrowed.style.width = `${Math.min(100, borrowed / total * 100)}%`;
+      fillEvents.style.width = `${Math.min(100, events / 5 * 100)}%`; // 5 — условный лимит
+    };
+
+    // События (упрощённо — без формы, только статистика)
+    const getEvents = () => JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]');
     const setEvents = arr => {
-      localStorage.setItem(EVENT_KEY, JSON.stringify(arr));
+      localStorage.setItem(EVENTS_KEY, JSON.stringify(arr));
       updateStats();
     };
 
-    eventForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('visitorName').value.trim();
-      const ev = document.getElementById('eventSelect').value;
-      if (!name) { showToast('Укажите имя', 'warn'); return; }
-      const arr = getEvents();
-      arr.push({ name, event: ev, time: new Date().toLocaleString() });
-      setEvents(arr);
-      document.getElementById('visitorName').value = '';
-      showToast('Вы записаны!');
-    });
-
-    viewEvents.addEventListener('click', () => {
-      const arr = getEvents();
-      eventList.innerHTML = arr.length
-        ? arr.map(x => `<p class="text-muted" style="margin:4px 0;">${x.name} — ${x.event}</p>`).join('')
-        : `<p class="text-muted">Нет записей.</p>`;
-    });
-
-    // === Рекомендации ===
+    // Рекомендации
     document.getElementById('getRec').addEventListener('click', () => {
-      const g = recGenre.value;
-      const list = sampleBooks.filter(b => b.genre === g);
-      if (!list.length) {
-        recResult.innerHTML = `<p class="text-muted">Нет рекомендаций по жанру «${g}».</p>`;
+      const genre = recGenre.value;
+      const candidates = books.filter(b => b.genre === genre);
+      if (!candidates.length) {
+        recResult.innerHTML = `<p class="text-muted">Нет книг в жанре «${genre}»</p>`;
         return;
       }
-      const pick = list[Math.floor(Math.random() * list.length)];
-      const coverLetters = pick.title.split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('');
-      recResult.innerHTML = `
-        <div class="book" style="animation: none;">
-          <div class="cover">${coverLetters}</div>
-          <div class="meta">
-            <h4>${escapeHtml(pick.title)}</h4>
-            <p>${escapeHtml(pick.author)} • ${pick.year} • <span class="pill">${pick.genre}</span></p>
-          </div>
-        </div>`;
+      const book = candidates[Math.floor(Math.random() * candidates.length)];
+      recResult.innerHTML = renderBook(book);
+      attachHandlers();
     });
 
-    // === Фильтры ===
-    searchInput.addEventListener('input', () => renderBooks(searchInput.value, genreFilter.value));
-    genreFilter.addEventListener('change', () => renderBooks(searchInput.value, genreFilter.value));
+    // Фильтры
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const genre = btn.dataset.genre;
+        const q = searchInput.value.toLowerCase();
+        const filtered = books.filter(b => 
+          (!genre || b.genre === genre) && 
+          (b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
+        );
+        renderBooks(filtered);
+      });
+    });
 
-    // === 🧪 Экспорт / Импорт ===
-    exportBtn?.addEventListener('click', () => {
+    searchInput.addEventListener('input', () => {
+      const activeBtn = document.querySelector('.filter-btn.active');
+      const genre = activeBtn?.dataset.genre || '';
+      const q = searchInput.value.toLowerCase();
+      const filtered = books.filter(b => 
+        (!genre || b.genre === genre) && 
+        (b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
+      );
+      renderBooks(filtered);
+    });
+
+    // Экспорт/импорт
+    exportBtn.addEventListener('click', () => {
       const data = {
         borrowed: getBorrowed(),
         events: getEvents(),
-        timestamp: new Date().toISOString(),
-        version: 'lib-demo-v3'
+        version: 'biblio-v1',
+        exportedAt: new Date().toISOString()
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `library-data-${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(a);
+      a.download = `biblio-data-${new Date().toJSON().slice(0,10)}.json`;
       a.click();
-      document.body.removeChild(a);
       URL.revokeObjectURL(url);
       showToast('Данные экспортированы');
     });
 
-    importInput?.addEventListener('change', (e) => {
+    importInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = () => {
         try {
           const data = JSON.parse(reader.result);
-          if (data.borrowed) {
+          if (Array.isArray(data.borrowed)) {
             setBorrowed(data.borrowed);
+            renderBorrowed();
           }
-          if (data.events) {
-            localStorage.setItem(EVENT_KEY, JSON.stringify(data.events));
-            updateStats();
-          }
-          renderBorrowed();
           showToast('Данные импортированы');
         } catch (err) {
-          showToast('Ошибка импорта: неверный формат', 'warn');
-          console.error(err);
+          alert('Ошибка импорта: неверный JSON');
         }
       };
       reader.readAsText(file);
-      e.target.value = ''; // reset for repeat upload
+      e.target.value = '';
     });
 
-    // === Инициализация ===
-    window.addEventListener('DOMContentLoaded', () => {
-      initGenreSelects();
-      updateStats(); // сразу обновляем статистику
-      setTimeout(() => {
-        if (booksList.querySelector('.skeleton')) booksList.innerHTML = '';
-        renderBooks();
-      }, 500);
-      renderBorrowed();
-    });
-
-    clearBorrowed.addEventListener('click', () => {
-      if (confirm('Очистить все записи о выданных книгах?')) {
-        setBorrowed([]);
-        renderBorrowed();
-        showToast('Данные сброшены');
+    // Toast (простой, без выезда — fade only)
+    const showToast = (msg) => {
+      if (window.toastEl) {
+        clearTimeout(window.toastId);
+        document.body.removeChild(window.toastEl);
       }
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position: fixed; top: 20px; right: 20px; 
+        background: var(--text); color: white; padding: 12px 20px; 
+        border-radius: 12px; font-weight: 500; 
+        box-shadow: 0 6px 20px oklch(0% 0 0 / 0.2);
+        opacity: 0; transform: translateX(20px); 
+        transition: opacity 0.3s, transform 0.3s;
+        z-index: 1000;
+      `;
+      el.textContent = msg;
+      document.body.appendChild(el);
+      window.toastEl = el;
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateX(0)';
+      }, 10);
+      window.toastId = setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+          if (el.parentNode) el.parentNode.removeChild(el);
+          window.toastEl = null;
+        }, 300);
+      }, 2000);
+    };
+
+    // Инициализация
+    window.addEventListener('DOMContentLoaded', () => {
+      updateStats();
+      renderBooks();
+      viewBorrowedBtn.addEventListener('click', renderBorrowed);
+      clearBorrowed.addEventListener('click', () => {
+        if (confirm('Очистить все данные?')) {
+          setBorrowed([]);
+          renderBorrowed();
+          showToast('Очищено');
+        }
+      });
     });
   </script>
 </body>
