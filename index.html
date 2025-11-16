@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Библиотека — демо для GitHub Pages</title>
+  <meta name="description" content="Демонстрационный статический сайт библиотеки — три сценария: поиск каталога, выдача/возврат книг (симуляция), рекомендации и запись на событие. Готово для публикации на GitHub Pages." />
+  <style>
+    /* Простая и чистая стилизация (встраиваемая) */
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#1f6feb}
+    *{box-sizing:border-box}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;margin:0;background:var(--bg);color:#0f172a}
+    header{background:linear-gradient(90deg,#0ea5e9, #6366f1);color:#fff;padding:28px 20px}
+    .container{max-width:1000px;margin:20px auto;padding:0 16px}
+    h1{margin:0 0 6px;font-size:22px}
+    p.lead{margin:0;opacity:.9}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(12,18,25,.06)}
+    input[type="text"], select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+    button{background:var(--accent);color:#fff;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .book{display:flex;gap:12px;border-radius:8px;padding:10px;border:1px solid #eef2ff;margin-bottom:10px;align-items:center}
+    .cover{width:56px;height:78px;background:#eef2ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#94a3b8}
+    .meta{flex:1}
+    .meta h4{margin:0 0 6px;font-size:15px}
+    .meta p{margin:0;color:var(--muted);font-size:13px}
+    .small{font-size:13px}
+    .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef2ff;color:#334155;font-weight:600;font-size:12px}
+    footer{max-width:1000px;margin:16px auto;padding:8px 16px;color:var(--muted);font-size:13px}
+    @media(max-width:880px){.grid{grid-template-columns:1fr;}.container{padding:0 12px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Библиотека — демо</h1>
+      <p class="lead">Статический сайт для публикации на GitHub Pages. Встроённая симуляция выдачи книг и события — всё хранится в браузере.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section class="card" id="catalog">
+        <h2>1) Поиск и каталог</h2>
+        <p class="muted">Найдите книги по названию, автору или жанру.</p>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <input id="searchInput" type="text" placeholder="Поиск: название, автор..." />
+          <select id="genreFilter" style="width:150px">
+            <option value="">Все жанры</option>
+          </select>
+        </div>
+        <div id="booksList" style="margin-top:12px"></div>
+      </section>
+
+      <aside class="card">
+        <div style="margin-bottom:14px">
+          <h3 style="margin:0 0 8px">2) Моя учётная запись</h3>
+          <p class="muted">Симуляция выдачи/возврата. Данные сохраняются в localStorage.</p>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button id="viewBorrowedBtn">Показать мои книги</button>
+            <button id="clearBorrowed" style="background:#ef4444">Очистить</button>
+          </div>
+          <div id="borrowedList" style="margin-top:12px"></div>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid #eef2ff">
+
+        <div>
+          <h3 style="margin:0 0 8px">3) Сценарии / События</h3>
+          <p class="muted">Зарегистрируйтесь на мероприятие или получите рекомендацию.</p>
+
+          <div style="margin-top:10px">
+            <strong class="small">Запись на событие</strong>
+            <form id="eventForm" style="margin-top:8px">
+              <input id="visitorName" type="text" placeholder="Ваше имя" required />
+              <select id="eventSelect" style="margin-top:8px">
+                <option>Авторская встреча: "Современная проза" — 2025-12-01</option>
+                <option>Детский час: мастер-класс — 2025-12-05</option>
+                <option>Лекция: История книги — 2026-01-15</option>
+              </select>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <button type="submit">Записаться</button>
+                <button id="viewEvents" type="button" style="background:#10b981">Мои записи</button>
+              </div>
+            </form>
+            <div id="eventList" style="margin-top:8px"></div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid #eef2ff">
+
+          <div>
+            <strong class="small">Рекомендация книги</strong>
+            <p class="muted" style="margin:6px 0 8px">Выберите жанр — мы предложим книгу.</p>
+            <div style="display:flex;gap:8px">
+              <select id="recGenre"></select>
+              <button id="getRec">Показать</button>
+            </div>
+            <div id="recResult" style="margin-top:10px"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">Подсказка: переименуйте этот файл в <code>index.html</code> и загрузите в репозиторий — включите GitHub Pages в настройках репозитория.</div>
+  </footer>
+
+  <script>
+    // ====== Данные каталога (можно расширять) ======
+    const sampleBooks = [
+      {id:1,title:'Мастер и Маргарита',author:'М. Булгаков',genre:'Классика',year:1967},
+      {id:2,title:'Преступление и наказание',author:'Ф. Достоевский',genre:'Классика',year:1866},
+      {id:3,title:'Норвежский лес',author:'Х. Мураками',genre:'Современная проза',year:1987},
+      {id:4,title:'Чудный остров',author:'Жюль Верн',genre:'Приключения',year:1874},
+      {id:5,title:'Чистый код',author:'Р. Мартин',genre:'Техническая литература',year:2008},
+      {id:6,title:'Приключения Тома Сойера',author:'М. Твен',genre:'Классика',year:1876},
+      {id:7,title:'Алгоритмы: построение и анализ',author:'Т. Кормен',genre:'Техническая литература',year:2009}
+    ];
+
+    // LocalStorage keys
+    const BORROW_KEY = 'demo_library_borrowed';
+    const EVENT_KEY = 'demo_library_events';
+
+    // ====== Инициализация UI ======
+    const booksList = document.getElementById('booksList');
+    const searchInput = document.getElementById('searchInput');
+    const genreFilter = document.getElementById('genreFilter');
+    const recGenre = document.getElementById('recGenre');
+    const recResult = document.getElementById('recResult');
+    const borrowedList = document.getElementById('borrowedList');
+    const viewBorrowedBtn = document.getElementById('viewBorrowedBtn');
+    const clearBorrowed = document.getElementById('clearBorrowed');
+    const eventForm = document.getElementById('eventForm');
+    const eventList = document.getElementById('eventList');
+    const viewEvents = document.getElementById('viewEvents');
+
+    function uniqueGenres(books){
+      const set = new Set(books.map(b=>b.genre));
+      return Array.from(set).sort();
+    }
+
+    function populateGenreControls(){
+      const genres = uniqueGenres(sampleBooks);
+      genres.forEach(g=>{
+        const opt = document.createElement('option'); opt.value = g; opt.textContent = g; genreFilter.appendChild(opt);
+        const opt2 = document.createElement('option'); opt2.value = g; opt2.textContent = g; recGenre.appendChild(opt2);
+      });
+    }
+
+    function renderBooks(filterText='', genre=''){
+      booksList.innerHTML='';
+      const q = filterText.trim().toLowerCase();
+      const filtered = sampleBooks.filter(b=>{
+        if(genre && b.genre !== genre) return false;
+        if(!q) return true;
+        return (b.title + ' ' + b.author + ' ' + b.genre).toLowerCase().includes(q);
+      });
+      if(filtered.length===0){booksList.innerHTML='<p class="muted">Не найдено книг.</p>';return}
+      filtered.forEach(b=>{
+        const div = document.createElement('div'); div.className='book';
+        div.innerHTML = `<div class="cover">${b.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div>
+                         <div class="meta"><h4>${escapeHtml(b.title)}</h4><p class="muted">${escapeHtml(b.author)} • ${b.year} • <span class="pill">${b.genre}</span></p></div>
+                         <div><button data-id="${b.id}" class="borrowBtn">Выдать</button></div>`;
+        booksList.appendChild(div);
+      });
+      // attach handlers
+      document.querySelectorAll('.borrowBtn').forEach(btn=>btn.addEventListener('click',()=>{
+        const id = Number(btn.dataset.id); toggleBorrow(id);
+      }));
+    }
+
+    function escapeHtml(s){ return s.replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]) }
+
+    // ===== Borrow logic (simуляция) =====
+    function getBorrowed(){
+      try{ return JSON.parse(localStorage.getItem(BORROW_KEY) || '[]') }catch(e){return []}
+    }
+    function setBorrowed(arr){ localStorage.setItem(BORROW_KEY, JSON.stringify(arr)); }
+    function toggleBorrow(bookId){
+      const arr = getBorrowed();
+      const idx = arr.indexOf(bookId);
+      if(idx===-1){ arr.push(bookId); alert('Книга выдана (симуляция).'); }
+      else{ arr.splice(idx,1); alert('Книга возвращена.'); }
+      setBorrowed(arr); renderBorrowed();
+    }
+    function renderBorrowed(){
+      const arr = getBorrowed();
+      if(arr.length===0){ borrowedList.innerHTML='<p class="muted">У вас нет выданных книг.</p>'; return }
+      borrowedList.innerHTML='';
+      arr.forEach(id=>{
+        const b = sampleBooks.find(x=>x.id===id);
+        if(!b) return;
+        const e = document.createElement('div'); e.className='book';
+        e.innerHTML = `<div class="cover">${b.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div>
+                       <div class="meta"><h4>${escapeHtml(b.title)}</h4><p class="muted">${escapeHtml(b.author)} • ${b.year}</p></div>
+                       <div><button data-id="${b.id}" class="returnBtn">Вернуть</button></div>`;
+        borrowedList.appendChild(e);
+      });
+      document.querySelectorAll('.returnBtn').forEach(btn=>btn.addEventListener('click',()=>{
+        const id = Number(btn.dataset.id); toggleBorrow(id);
+      }));
+    }
+
+    viewBorrowedBtn.addEventListener('click',()=>renderBorrowed());
+    clearBorrowed.addEventListener('click',()=>{ if(confirm('Очистить все записи о выданных книгах?')){ setBorrowed([]); renderBorrowed(); } });
+
+    // ===== Events logic =====
+    function getEvents(){ try{ return JSON.parse(localStorage.getItem(EVENT_KEY) || '[]') }catch(e){return []} }
+    function setEvents(a){ localStorage.setItem(EVENT_KEY, JSON.stringify(a)); }
+    eventForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      const name = document.getElementById('visitorName').value.trim();
+      const ev = document.getElementById('eventSelect').value;
+      if(!name){alert('Введите имя'); return}
+      const arr = getEvents(); arr.push({name, event:ev, when: new Date().toISOString()}); setEvents(arr);
+      document.getElementById('visitorName').value=''; alert('Вы успешно записаны! (локальная симуляция)');
+    });
+    viewEvents.addEventListener('click',()=>{
+      const arr = getEvents(); if(arr.length===0){ eventList.innerHTML='<p class="muted">У вас нет записей на мероприятия.</p>'; return }
+      eventList.innerHTML=''; arr.forEach(x=>{
+        const d = document.createElement('div'); d.className='muted small'; d.style.marginBottom='8px'; d.textContent = `${x.name} — ${x.event} (запись: ${new Date(x.when).toLocaleString()})`;
+        eventList.appendChild(d);
+      });
+    });
+
+    // ===== Recommendations =====
+    document.getElementById('getRec').addEventListener('click',()=>{
+      const g = recGenre.value; const list = sampleBooks.filter(b=>b.genre===g);
+      if(list.length===0){ recResult.innerHTML='<p class="muted">По выбранному жанру рекомендаций нет.</p>'; return }
+      const pick = list[Math.floor(Math.random()*list.length)];
+      recResult.innerHTML = `<div class="book"><div class="cover">${pick.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div><div class="meta"><h4>${escapeHtml(pick.title)}</h4><p class="muted">${escapeHtml(pick.author)} • ${pick.year} • <span class="pill">${pick.genre}</span></p></div></div>`;
+    });
+
+    // ===== Filters =====
+    searchInput.addEventListener('input', ()=> renderBooks(searchInput.value, genreFilter.value));
+    genreFilter.addEventListener('change', ()=> renderBooks(searchInput.value, genreFilter.value));
+
+    // ===== Init on load =====
+    (function init(){
+      populateGenreControls();
+      renderBooks();
+      renderBorrowed();
+      // preselect recGenre first item if present
+      if(recGenre.options.length>0) recGenre.selectedIndex = 0;
+    })();
+
+    // ===== Utility: make file ready for GitHub Pages =====
+    // Для публикации: просто положите этот файл в корень репозитория как index.html и включите Pages.
+  </script>
+</body>
+</html>
