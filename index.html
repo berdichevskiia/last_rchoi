@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Проект: Пользовательский интерфейс — Индивидуальное задание</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Пользовательский интерфейс — Индивидуальное задание</h1>
+      <nav class="main-nav">
+        <a href="#research">Исследование</a>
+        <a href="#scenarios">Сценарии</a>
+        <a href="#structure">Структура</a>
+        <a href="#wireframes">Вайрфреймы</a>
+        <a href="#styleguide">Стиль</a>
+        <a href="#implementation">Реализация</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="research" class="card">
+      <h2>1. Исследование</h2>
+      <p>Краткий анализ конкурентов и целевой аудитории (ЦА).</p>
+      <ul>
+        <li><strong>Цель сервиса:</strong> образовательная демонстрация проектирования UI — пример учебного проекта.</li>
+        <li><strong>Конкуренты / референсы:</strong> GitHub Pages-демо, простые SaaS-лендинги, учебные портфолио.</li>
+        <li><strong>Целевая аудитория:</strong> студенты, преподаватели, разработчики без глубокого UX-опыта.</li>
+        <li><strong>Ключевые требования от ЦА:</strong> понятная навигация, простые сценарии, четкая обратная связь на действия.</li>
+      </ul>
+      <p>Выводы исследования: упор на простоту, доступность, мобильную адаптацию и демонстрационную содержательность.</p>
+    </section>
+
+    <section id="scenarios" class="card">
+      <h2>2. Пользовательские сценарии (подробно)</h2>
+
+      <article class="scenario">
+        <h3>Сценарий A — "Ознакомление с проектом"</h3>
+        <ol>
+          <li>Пользователь открывает сайт (index.html).</li>
+          <li>Видит заголовок, краткое описание и навигацию.</li>
+          <li>Кликает "Исследование" — переходит к разделу исследования, читает выводы.</li>
+          <li>Возвращается в навигацию, переходит к "Вайрфреймы" для просмотра набросков.</li>
+          <li>При необходимости скачивает ZIP с кодом через страницу "Реализация".</li>
+        </ol>
+        <p>Ожидаемое поведение: навигация прокручивает страницу, контент читаем на мобильных и десктопах.</p>
+      </article>
+
+      <article class="scenario">
+        <h3>Сценарий B — "Тестовое задание / проверка элементов"</h3>
+        <ol>
+          <li>Пользователь открывает раздел "Реализация".</li>
+          <li>Нажимает кнопку "Открыть демо". Откроется тестовая страница с интерактивными элементами (формы/модалки).</li>
+          <li>Заполняет форму обратной связи и нажимает "Отправить".</li>
+          <li>Сайт показывает уведомление об успешной отправке (локально — эмуляция через JavaScript).</li>
+        </ol>
+        <p>Ожидаемое поведение: видно явную обратную связь (уведомление), поля валидируются, кнопка недоступна при пустых полях.</p>
+      </article>
+
+      <article class="scenario">
+        <h3>Сценарий C — "Проверка аналитики (демо) и поведение пользователя"</h3>
+        <ol>
+          <li>Администратор вставляет код счётчика (Яндекс.Метрика) в <code>&lt;head&gt;</code> (в проекте — пример). </li>
+          <li>Пользователь переходит между разделами и кликает ссылки — счётчик фиксирует события (в реальном развёртывании).</li>
+          <li>Администратор через интерфейс Яндекс.Метрики изучает карты кликов и вебвизор.</li>
+        </ol>
+        <p>Примечание: в ZIP — пример вставки кода метрики и комментарий о необходимости заменить ID на реальный.</p>
+      </article>
+
+      <article class="scenario">
+        <h3>Сценарий D — "Получение отчёта"</h3>
+        <ol>
+          <li>Студент формирует отчёт: копирует тексты из разделов "Исследование", "Структура", "Вайрфреймы", "Стиль".</li>
+          <li>Генерирует PDF локально (например, через печать браузера в PDF) и прилагает к защите.</li>
+        </ol>
+        <p>Ожидаемое поведение: все необходимые материалы доступны на одной странице и легко экспортируются в PDF.</p>
+      </article>
+    </section>
+
+    <section id="structure" class="card">
+      <h2>3. Структура сервиса</h2>
+      <p>Иерархия страниц и переходы (упрощённо):</p>
+      <pre class="diagram">
+Home
+ ├─ Исследование (section)
+ ├─ Сценарии (section)
+ ├─ Структура (section)
+ ├─ Вайрфреймы (section)
+ ├─ Стиль (section)
+ └─ Реализация (section, скачивание кода)
+      </pre>
+      <p>Переходы реализованы как якорные ссылки на единую страницу (SPA-like, без фреймворков).</p>
+    </section>
+
+    <section id="wireframes" class="card">
+      <h2>4. Прототипирование — Вайрфреймы</h2>
+      <p>Ниже — простые SVG-эскизы вайрфреймов (наглядно):</p>
+      <div class="wireframes">
+        <!-- Simple SVG sketches -->
+        <svg viewBox="0 0 600 140" class="wf">
+          <rect x="2" y="2" width="596" height="136" fill="none" stroke="#222" stroke-dasharray="4 4" />
+          <rect x="16" y="20" width="120" height="80" fill="none" stroke="#222" />
+          <rect x="152" y="20" width="420" height="30" fill="none" stroke="#222" />
+          <rect x="152" y="62" width="420" height="18" fill="none" stroke="#222" />
+          <rect x="152" y="88" width="240" height="18" fill="none" stroke="#222" />
+          <text x="24" y="50" font-size="12">Лого / Меню</text>
+          <text x="158" y="38" font-size="12">Заголовок</text>
+          <text x="158" y="76" font-size="12">Краткое описание / пояснение</text>
+        </svg>
+
+        <svg viewBox="0 0 600 140" class="wf">
+          <rect x="2" y="2" width="596" height="136" fill="none" stroke="#222" stroke-dasharray="4 4" />
+          <rect x="20" y="18" width="560" height="18" fill="none" stroke="#222" />
+          <rect x="20" y="44" width="200" height="80" fill="none" stroke="#222" />
+          <rect x="232" y="44" width="348" height="80" fill="none" stroke="#222" />
+          <text x="28" y="80" font-size="12">Сайдбар (фильтры)</text>
+          <text x="240" y="80" font-size="12">Контент / Список экранов / Превью</text>
+        </svg>
+      </div>
+      <p>Рекомендация: при защите предоставить реальные снимки экранов Figma — добавить ссылку на макет.</p>
+    </section>
+
+    <section id="styleguide" class="card">
+      <h2>5. Стиль (стайлгайд)</h2>
+      <ul>
+        <li><strong>Шрифты:</strong> Inter или system-ui (альтернатива для оффлайн).</li>
+        <li><strong>Цвета:</strong> акцент — #2b6cb0 (синий), фон — #f7fafc, текст — #222.</li>
+        <li><strong>Кнопки:</strong> крупные, с закруглением 8–12px, явная тень.</li>
+        <li><strong>Иконки:</strong> минималистичные, одноцветные.</li>
+        <li><strong>Сетка:</strong> 12 колонок, адаптивная.</li>
+      </ul>
+      <p>В проекте стили демонстрируют выбранную палитру — они находятся в styles.css.</p>
+    </section>
+
+    <section id="implementation" class="card">
+      <h2>6–7. Реализация и запуск (код в ZIP)</h2>
+      <p>Этот пакет содержит статический сайт. Для запуска:</p>
+      <ol>
+        <li>Скачать ZIP и распаковать.</li>
+        <li>Открыть <code>index.html</code> в браузере или запустить простой HTTP-сервер (рекомендуется):</li>
+      </ol>
+      <pre class="code-snippet">python -m http.server 8000
+# затем открыть http://localhost:8000</pre>
+      <p>Кнопка ниже открывает демо-форму (локально)</p>
+      <p><a class="btn" href="#demo" onclick="showDemo()">Открыть демо</a></p>
+
+      <h3 id="demo">Демо: форма обратной связи</h3>
+      <form id="feedbackForm" class="form">
+        <label>Имя
+          <input type="text" id="name" required placeholder="Ваше имя" />
+        </label>
+        <label>Email
+          <input type="email" id="email" required placeholder="you@example.com" />
+        </label>
+        <label>Сообщение
+          <textarea id="message" required placeholder="Краткое сообщение"></textarea>
+        </label>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+      <div id="notice" class="notice" hidden></div>
+
+      <p>В архиве также пример вставки Яндекс.Метрики (комментированный), замените ID на реальный для трекинга.</p>
+      <p><a class="btn download" href="ui_project.zip" download>Скачать архив с кодом (ZIP)</a></p>
+    </section>
+
+    <footer class="site-footer">
+      <p>Сделано для учебного задания. Автор: Артём Бердичевский (пример).</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
