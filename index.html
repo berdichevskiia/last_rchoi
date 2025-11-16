@@ -2,112 +2,565 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Библиотека — демо для GitHub Pages</title>
-  <meta name="description" content="Демонстрационный статический сайт библиотеки — три сценария: поиск каталога, выдача/возврат книг (симуляция), рекомендации и запись на событие. Готово для публикации на GitHub Pages." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Библиотека — современный демо</title>
+  <meta name="description" content="Современный статический сайт библиотеки с симуляцией выдачи книг, записью на события, экспортом и мобильным меню." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Простая и чистая стилизация (встраиваемая) */
-    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#1f6feb}
-    *{box-sizing:border-box}
-    body{font-family:Inter,Segoe UI,Arial,sans-serif;margin:0;background:var(--bg);color:#0f172a}
-    header{background:linear-gradient(90deg,#0ea5e9, #6366f1);color:#fff;padding:28px 20px}
-    .container{max-width:1000px;margin:20px auto;padding:0 16px}
-    h1{margin:0 0 6px;font-size:22px}
-    p.lead{margin:0;opacity:.9}
-    .grid{display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px}
-    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(12,18,25,.06)}
-    input[type="text"], select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
-    button{background:var(--accent);color:#fff;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
-    .muted{color:var(--muted);font-size:13px}
-    .book{display:flex;gap:12px;border-radius:8px;padding:10px;border:1px solid #eef2ff;margin-bottom:10px;align-items:center}
-    .cover{width:56px;height:78px;background:#eef2ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:600;color:#94a3b8}
-    .meta{flex:1}
-    .meta h4{margin:0 0 6px;font-size:15px}
-    .meta p{margin:0;color:var(--muted);font-size:13px}
-    .small{font-size:13px}
-    .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef2ff;color:#334155;font-weight:600;font-size:12px}
-    footer{max-width:1000px;margin:16px auto;padding:8px 16px;color:var(--muted);font-size:13px}
-    @media(max-width:880px){.grid{grid-template-columns:1fr;}.container{padding:0 12px}}
+    /* ===== СОВРЕМЕННЫЕ СТИЛИ (обновлённые) ===== */
+    :root {
+      --bg: #fafafa;
+      --bg-alt: #f4f4f5;
+      --card: #ffffff;
+      --text: #18181b;
+      --text-muted: #71717a;
+      --accent: #4f46e5; /* indigo-600 */
+      --accent-hover: #4338ca;
+      --danger: #ef4444;
+      --success: #16a34a;
+      --border: #e4e4e7;
+      --radius: 16px;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.03);
+      --shadow-md: 0 6px 16px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+      --transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f0f;
+        --bg-alt: #181818;
+        --card: #1e1e1e;
+        --text: #e4e4e7;
+        --text-muted: #a1a1aa;
+        --border: #3f3f46;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== HEADER (с гамбургером) ===== */
+    header {
+      background: linear-gradient(90deg, #818cf8, #4f46e5);
+      color: white;
+      padding: 20px 0;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-value {
+      font-weight: 600;
+    }
+
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .stats { justify-content: center; margin-top: 16px; }
+      header { padding: 16px 0; }
+    }
+
+    /* ===== OFF-CANVAS MENU ===== */
+    #mobileMenu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    #mobileMenu.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100%;
+      background: var(--card);
+      box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+      padding: 24px 0;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+    #mobileMenu.open .menu-panel {
+      transform: translateX(0);
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .close-menu {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .menu-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .menu-links li {
+      padding: 0 24px;
+    }
+    .menu-links a {
+      display: block;
+      padding: 12px 0;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+    .menu-links a:last-child { border-bottom: none; }
+
+    .menu-actions {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+    main {
+      padding: 32px 0 64px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1.125rem; }
+
+    .text-muted { color: var(--text-muted); font-size: 0.875rem; }
+
+    .input-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    input, select, textarea, button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    input, select {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .book {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(4px);
+      transition: var(--transition);
+    }
+    @media (prefers-color-scheme: dark) {
+      .book { background: rgba(30,30,30,0.6); }
+    }
+    .book:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cover {
+      flex: 0 0 56px;
+      height: 78px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #312e81;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .cover { background: linear-gradient(135deg, #1e293b, #334155); color: #cbd5e1; }
+    }
+
+    .meta h4 {
+      font-weight: 600;
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+    .meta p { margin: 0; color: var(--text-muted); }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill { background: #334155; color: #cbd5e1; }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+    }
+    .btn-primary:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      max-width: 320px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--text);
+      color: white;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    #toast .icon {
+      font-size: 18px;
+    }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+      background-size: 200% 100%;
+      animation: loading 1.2s infinite;
+      border-radius: 8px;
+    }
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .skeleton { background: linear-gradient(90deg, #2a2a2a, #3a3a3a, #2a2a2a); }
+    }
+
+    .skel-item {
+      height: 78px;
+      margin-bottom: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    code {
+      background: var(--bg-alt);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+
+    /* Focus for keyboard users */
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
+  <!-- 📱 Off-canvas menu -->
+  <div id="mobileMenu">
+    <div class="menu-panel">
+      <div class="menu-header">
+        <span class="logo">📚 Библиотека</span>
+        <button class="close-menu" id="closeMenu">&times;</button>
+      </div>
+      <ul class="menu-links">
+        <li><a href="#catalog">Каталог</a></li>
+        <li><a href="#account">Моя карточка</a></li>
+        <li><a href="#events">События</a></li>
+        <li><a href="#recs">Рекомендации</a></li>
+      </ul>
+      <div class="menu-actions">
+        <button class="btn btn-primary" id="exportBtn">📤 Экспорт данных</button>
+        <label class="btn btn-ghost" style="cursor: pointer;">
+          📤 Импорт данных
+          <input type="file" id="importInput" accept=".json" style="display: none;">
+        </label>
+      </div>
+    </div>
+  </div>
+
   <header>
     <div class="container">
-      <h1>Библиотека — демо</h1>
-      <p class="lead">Статический сайт для публикации на GitHub Pages. Встроённая симуляция выдачи книг и события — всё хранится в браузере.</p>
+      <div class="header-content">
+        <div class="logo">📚 Библиотека</div>
+        <nav class="nav-links">
+          <a href="#catalog">Каталог</a>
+          <a href="#account">Карточка</a>
+          <a href="#events">События</a>
+          <a href="#recs">Рекомендации</a>
+        </nav>
+        <button class="hamburger" id="openMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span>Книг:</span>
+          <span class="stat-value" id="stat-total">7</span>
+        </div>
+        <div class="stat">
+          <span>Выдано:</span>
+          <span class="stat-value" id="stat-borrowed">0</span>
+        </div>
+        <div class="stat">
+          <span>Записей:</span>
+          <span class="stat-value" id="stat-events">0</span>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="container">
     <div class="grid">
       <section class="card" id="catalog">
-        <h2>1) Поиск и каталог</h2>
-        <p class="muted">Найдите книги по названию, автору или жанру.</p>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <input id="searchInput" type="text" placeholder="Поиск: название, автор..." />
-          <select id="genreFilter" style="width:150px">
+        <h2>1. Каталог и поиск</h2>
+        <p class="text-muted">Найдите книгу по названию, автору или жанру.</p>
+        <div class="input-group">
+          <input id="searchInput" type="text" placeholder="Название, автор или жанр…" autocomplete="off" />
+          <select id="genreFilter" style="width: 160px;">
             <option value="">Все жанры</option>
           </select>
         </div>
-        <div id="booksList" style="margin-top:12px"></div>
+        <div id="booksList" style="margin-top: 20px;">
+          <div class="skeleton skel-item"></div>
+          <div class="skeleton skel-item"></div>
+          <div class="skeleton skel-item"></div>
+        </div>
       </section>
 
       <aside class="card">
-        <div style="margin-bottom:14px">
-          <h3 style="margin:0 0 8px">2) Моя учётная запись</h3>
-          <p class="muted">Симуляция выдачи/возврата. Данные сохраняются в localStorage.</p>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button id="viewBorrowedBtn">Показать мои книги</button>
-            <button id="clearBorrowed" style="background:#ef4444">Очистить</button>
+        <div id="account">
+          <h3>2. Моя карточка</h3>
+          <p class="text-muted">Симуляция выдачи и возврата книг. Данные хранятся в вашем браузере.</p>
+          <div style="display: flex; gap: 10px; margin-top: 16px;">
+            <button id="viewBorrowedBtn" class="btn btn-ghost">Мои книги</button>
+            <button id="clearBorrowed" class="btn btn-ghost" style="color: var(--danger);">Очистить</button>
           </div>
-          <div id="borrowedList" style="margin-top:12px"></div>
+          <div id="borrowedList" style="margin-top: 20px;">
+            <p class="text-muted">У вас пока нет выданных книг.</p>
+          </div>
         </div>
 
-        <hr style="margin:12px 0;border:none;border-top:1px solid #eef2ff">
+        <div class="divider"></div>
 
-        <div>
-          <h3 style="margin:0 0 8px">3) Сценарии / События</h3>
-          <p class="muted">Зарегистрируйтесь на мероприятие или получите рекомендацию.</p>
-
-          <div style="margin-top:10px">
-            <strong class="small">Запись на событие</strong>
-            <form id="eventForm" style="margin-top:8px">
-              <input id="visitorName" type="text" placeholder="Ваше имя" required />
-              <select id="eventSelect" style="margin-top:8px">
-                <option>Авторская встреча: "Современная проза" — 2025-12-01</option>
-                <option>Детский час: мастер-класс — 2025-12-05</option>
-                <option>Лекция: История книги — 2026-01-15</option>
-              </select>
-              <div style="margin-top:8px;display:flex;gap:8px">
-                <button type="submit">Записаться</button>
-                <button id="viewEvents" type="button" style="background:#10b981">Мои записи</button>
-              </div>
-            </form>
-            <div id="eventList" style="margin-top:8px"></div>
-          </div>
-
-          <hr style="margin:12px 0;border:none;border-top:1px solid #eef2ff">
-
-          <div>
-            <strong class="small">Рекомендация книги</strong>
-            <p class="muted" style="margin:6px 0 8px">Выберите жанр — мы предложим книгу.</p>
-            <div style="display:flex;gap:8px">
-              <select id="recGenre"></select>
-              <button id="getRec">Показать</button>
+        <div id="events">
+          <h3>3. События</h3>
+          <p class="text-muted">Запишитесь на интересное мероприятие.</p>
+          <form id="eventForm" style="margin-top: 12px;">
+            <input id="visitorName" type="text" placeholder="Имя" required />
+            <select id="eventSelect" style="margin-top: 12px; width: 100%;">
+              <option>Авторская встреча: «Современная проза» — 2025-12-01</option>
+              <option>Детский час: мастер-класс — 2025-12-05</option>
+              <option>Лекция: История книги — 2026-01-15</option>
+            </select>
+            <div style="display: flex; gap: 10px; margin-top: 16px;">
+              <button type="submit" class="btn btn-primary">Записаться</button>
+              <button id="viewEvents" type="button" class="btn btn-ghost">Мои записи</button>
             </div>
-            <div id="recResult" style="margin-top:10px"></div>
+          </form>
+          <div id="eventList" style="margin-top: 16px;"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="recs">
+          <h3>4. Рекомендации</h3>
+          <p class="text-muted">Выберите жанр — и мы подберём книгу.</p>
+          <div style="display: flex; gap: 10px; margin-top: 12px;">
+            <select id="recGenre" style="flex: 1;"></select>
+            <button id="getRec" class="btn btn-primary">Подобрать</button>
           </div>
+          <div id="recResult" style="margin-top: 16px;"></div>
         </div>
       </aside>
     </div>
   </main>
 
   <footer>
-    <div class="container">Подсказка: переименуйте этот файл в <code>index.html</code> и загрузите в репозиторий — включите GitHub Pages в настройках репозитория.</div>
+    <div class="container">
+      ✅ Готово к публикации на <strong>GitHub Pages</strong>: переименуйте в <code>index.html</code> и загрузите в репозиторий.
+    </div>
   </footer>
 
+  <!-- Toast -->
+  <div id="toast" role="alert" aria-live="polite">
+    <span class="icon">✅</span>
+    <span id="toast-text">Сообщение</span>
+  </div>
+
   <script>
-    // ====== Данные каталога (можно расширять) ======
+    // === Данные ===
     const sampleBooks = [
       {id:1,title:'Мастер и Маргарита',author:'М. Булгаков',genre:'Классика',year:1967},
       {id:2,title:'Преступление и наказание',author:'Ф. Достоевский',genre:'Классика',year:1866},
@@ -118,11 +571,10 @@
       {id:7,title:'Алгоритмы: построение и анализ',author:'Т. Кормен',genre:'Техническая литература',year:2009}
     ];
 
-    // LocalStorage keys
-    const BORROW_KEY = 'demo_library_borrowed';
-    const EVENT_KEY = 'demo_library_events';
+    const BORROW_KEY = 'lib_borrowed_v3';
+    const EVENT_KEY = 'lib_events_v3';
 
-    // ====== Инициализация UI ======
+    // === DOM elements ===
     const booksList = document.getElementById('booksList');
     const searchInput = document.getElementById('searchInput');
     const genreFilter = document.getElementById('genreFilter');
@@ -134,119 +586,287 @@
     const eventForm = document.getElementById('eventForm');
     const eventList = document.getElementById('eventList');
     const viewEvents = document.getElementById('viewEvents');
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
 
-    function uniqueGenres(books){
-      const set = new Set(books.map(b=>b.genre));
-      return Array.from(set).sort();
-    }
+    // === Статистика ===
+    const statTotal = document.getElementById('stat-total');
+    const statBorrowed = document.getElementById('stat-borrowed');
+    const statEvents = document.getElementById('stat-events');
 
-    function populateGenreControls(){
-      const genres = uniqueGenres(sampleBooks);
-      genres.forEach(g=>{
-        const opt = document.createElement('option'); opt.value = g; opt.textContent = g; genreFilter.appendChild(opt);
-        const opt2 = document.createElement('option'); opt2.value = g; opt2.textContent = g; recGenre.appendChild(opt2);
+    // === Меню ===
+    const mobileMenu = document.getElementById('mobileMenu');
+    const openMenu = document.getElementById('openMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const exportBtn = document.getElementById('exportBtn');
+    const importInput = document.getElementById('importInput');
+
+    // === Утилиты ===
+    const escapeHtml = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'<','>':'>','"':'&quot;',"'":"&#39;"})[m]);
+
+    const showToast = (msg, type = 'success') => {
+      toastText.textContent = msg;
+      toast.querySelector('.icon').textContent = type === 'success' ? '✅' : '⚠️';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    };
+
+    // === Инициализация меню ===
+    openMenu?.addEventListener('click', () => {
+      mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    closeMenu?.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    mobileMenu?.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // === Жанры ===
+    const uniqueGenres = arr => [...new Set(arr.map(b => b.genre))].sort();
+    const genres = uniqueGenres(sampleBooks);
+
+    const initGenreSelects = () => {
+      genres.forEach(g => {
+        const opt1 = new Option(g, g); genreFilter.appendChild(opt1);
+        const opt2 = new Option(g, g); recGenre.appendChild(opt2);
       });
-    }
+      if (recGenre.options.length) recGenre.selectedIndex = 0;
+    };
 
-    function renderBooks(filterText='', genre=''){
-      booksList.innerHTML='';
-      const q = filterText.trim().toLowerCase();
-      const filtered = sampleBooks.filter(b=>{
-        if(genre && b.genre !== genre) return false;
-        if(!q) return true;
+    // === Обновление статистики ===
+    const updateStats = () => {
+      statTotal.textContent = sampleBooks.length;
+      const borrowed = getBorrowed().length;
+      const events = getEvents().length;
+      statBorrowed.textContent = borrowed;
+      statEvents.textContent = events;
+    };
+
+    // === Рендер книг ===
+    const renderBooks = (query = '', genre = '') => {
+      const q = query.trim().toLowerCase();
+      const filtered = sampleBooks.filter(b => {
+        if (genre && b.genre !== genre) return false;
+        if (!q) return true;
         return (b.title + ' ' + b.author + ' ' + b.genre).toLowerCase().includes(q);
       });
-      if(filtered.length===0){booksList.innerHTML='<p class="muted">Не найдено книг.</p>';return}
-      filtered.forEach(b=>{
-        const div = document.createElement('div'); div.className='book';
-        div.innerHTML = `<div class="cover">${b.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div>
-                         <div class="meta"><h4>${escapeHtml(b.title)}</h4><p class="muted">${escapeHtml(b.author)} • ${b.year} • <span class="pill">${b.genre}</span></p></div>
-                         <div><button data-id="${b.id}" class="borrowBtn">Выдать</button></div>`;
+
+      booksList.innerHTML = '';
+      if (filtered.length === 0) {
+        booksList.innerHTML = `<p class="text-muted">Книг не найдено.</p>`;
+        return;
+      }
+
+      filtered.forEach((b, idx) => {
+        const coverLetters = b.title.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() || '').join('');
+        const div = document.createElement('div');
+        div.className = 'book';
+        div.style.animationDelay = `${idx * 60}ms`;
+        div.style.opacity = '0';
+        div.style.animation = 'fadeUp 0.4s forwards';
+        div.innerHTML = `
+          <div class="cover">${coverLetters || '??'}</div>
+          <div class="meta">
+            <h4>${escapeHtml(b.title)}</h4>
+            <p>${escapeHtml(b.author)} • ${b.year} • <span class="pill">${b.genre}</span></p>
+          </div>
+          <div>
+            <button data-id="${b.id}" class="btn btn-primary borrowBtn">Выдать</button>
+          </div>`;
         booksList.appendChild(div);
+        setTimeout(() => div.style.opacity = '1', 50 + idx * 30);
       });
-      // attach handlers
-      document.querySelectorAll('.borrowBtn').forEach(btn=>btn.addEventListener('click',()=>{
-        const id = Number(btn.dataset.id); toggleBorrow(id);
-      }));
-    }
 
-    function escapeHtml(s){ return s.replace(/[&<>\"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]) }
-
-    // ===== Borrow logic (simуляция) =====
-    function getBorrowed(){
-      try{ return JSON.parse(localStorage.getItem(BORROW_KEY) || '[]') }catch(e){return []}
-    }
-    function setBorrowed(arr){ localStorage.setItem(BORROW_KEY, JSON.stringify(arr)); }
-    function toggleBorrow(bookId){
-      const arr = getBorrowed();
-      const idx = arr.indexOf(bookId);
-      if(idx===-1){ arr.push(bookId); alert('Книга выдана (симуляция).'); }
-      else{ arr.splice(idx,1); alert('Книга возвращена.'); }
-      setBorrowed(arr); renderBorrowed();
-    }
-    function renderBorrowed(){
-      const arr = getBorrowed();
-      if(arr.length===0){ borrowedList.innerHTML='<p class="muted">У вас нет выданных книг.</p>'; return }
-      borrowedList.innerHTML='';
-      arr.forEach(id=>{
-        const b = sampleBooks.find(x=>x.id===id);
-        if(!b) return;
-        const e = document.createElement('div'); e.className='book';
-        e.innerHTML = `<div class="cover">${b.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div>
-                       <div class="meta"><h4>${escapeHtml(b.title)}</h4><p class="muted">${escapeHtml(b.author)} • ${b.year}</p></div>
-                       <div><button data-id="${b.id}" class="returnBtn">Вернуть</button></div>`;
-        borrowedList.appendChild(e);
+      document.querySelectorAll('.borrowBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = +btn.dataset.id;
+          toggleBorrow(id);
+          btn.textContent = '✓';
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.textContent = 'Выдать';
+            btn.disabled = false;
+          }, 800);
+        });
       });
-      document.querySelectorAll('.returnBtn').forEach(btn=>btn.addEventListener('click',()=>{
-        const id = Number(btn.dataset.id); toggleBorrow(id);
-      }));
-    }
+    };
 
-    viewBorrowedBtn.addEventListener('click',()=>renderBorrowed());
-    clearBorrowed.addEventListener('click',()=>{ if(confirm('Очистить все записи о выданных книгах?')){ setBorrowed([]); renderBorrowed(); } });
+    // Анимация
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
 
-    // ===== Events logic =====
-    function getEvents(){ try{ return JSON.parse(localStorage.getItem(EVENT_KEY) || '[]') }catch(e){return []} }
-    function setEvents(a){ localStorage.setItem(EVENT_KEY, JSON.stringify(a)); }
-    eventForm.addEventListener('submit', e=>{
+    // === Выдача/возврат ===
+    const getBorrowed = () => JSON.parse(localStorage.getItem(BORROW_KEY) || '[]');
+    const setBorrowed = arr => {
+      localStorage.setItem(BORROW_KEY, JSON.stringify(arr));
+      updateStats();
+    };
+
+    const toggleBorrow = id => {
+      const arr = getBorrowed();
+      const idx = arr.indexOf(id);
+      if (idx === -1) {
+        arr.push(id);
+        setBorrowed(arr);
+        showToast('Книга выдана');
+      } else {
+        arr.splice(idx, 1);
+        setBorrowed(arr);
+        showToast('Книга возвращена');
+      }
+      renderBorrowed();
+    };
+
+    const renderBorrowed = () => {
+      const ids = getBorrowed();
+      if (!ids.length) {
+        borrowedList.innerHTML = `<p class="text-muted">У вас нет выданных книг.</p>`;
+        return;
+      }
+      const books = ids.map(id => sampleBooks.find(b => b.id === id)).filter(Boolean);
+      borrowedList.innerHTML = books.map(b => `
+        <div class="book" style="animation: none; opacity: 1;">
+          <div class="cover">${b.title.split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('')}</div>
+          <div class="meta">
+            <h4>${escapeHtml(b.title)}</h4>
+            <p>${escapeHtml(b.author)} • ${b.year}</p>
+          </div>
+          <div><button data-id="${b.id}" class="btn btn-ghost returnBtn" style="color: var(--danger);">Вернуть</button></div>
+        </div>
+      `).join('');
+      document.querySelectorAll('.returnBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = +btn.dataset.id;
+          toggleBorrow(id);
+        });
+      });
+    };
+
+    // === События ===
+    const getEvents = () => JSON.parse(localStorage.getItem(EVENT_KEY) || '[]');
+    const setEvents = arr => {
+      localStorage.setItem(EVENT_KEY, JSON.stringify(arr));
+      updateStats();
+    };
+
+    eventForm.addEventListener('submit', e => {
       e.preventDefault();
       const name = document.getElementById('visitorName').value.trim();
       const ev = document.getElementById('eventSelect').value;
-      if(!name){alert('Введите имя'); return}
-      const arr = getEvents(); arr.push({name, event:ev, when: new Date().toISOString()}); setEvents(arr);
-      document.getElementById('visitorName').value=''; alert('Вы успешно записаны! (локальная симуляция)');
-    });
-    viewEvents.addEventListener('click',()=>{
-      const arr = getEvents(); if(arr.length===0){ eventList.innerHTML='<p class="muted">У вас нет записей на мероприятия.</p>'; return }
-      eventList.innerHTML=''; arr.forEach(x=>{
-        const d = document.createElement('div'); d.className='muted small'; d.style.marginBottom='8px'; d.textContent = `${x.name} — ${x.event} (запись: ${new Date(x.when).toLocaleString()})`;
-        eventList.appendChild(d);
-      });
+      if (!name) { showToast('Укажите имя', 'warn'); return; }
+      const arr = getEvents();
+      arr.push({ name, event: ev, time: new Date().toLocaleString() });
+      setEvents(arr);
+      document.getElementById('visitorName').value = '';
+      showToast('Вы записаны!');
     });
 
-    // ===== Recommendations =====
-    document.getElementById('getRec').addEventListener('click',()=>{
-      const g = recGenre.value; const list = sampleBooks.filter(b=>b.genre===g);
-      if(list.length===0){ recResult.innerHTML='<p class="muted">По выбранному жанру рекомендаций нет.</p>'; return }
-      const pick = list[Math.floor(Math.random()*list.length)];
-      recResult.innerHTML = `<div class="book"><div class="cover">${pick.title.split(' ').slice(0,2).map(s=>s[0]).join('')}</div><div class="meta"><h4>${escapeHtml(pick.title)}</h4><p class="muted">${escapeHtml(pick.author)} • ${pick.year} • <span class="pill">${pick.genre}</span></p></div></div>`;
+    viewEvents.addEventListener('click', () => {
+      const arr = getEvents();
+      eventList.innerHTML = arr.length
+        ? arr.map(x => `<p class="text-muted" style="margin:4px 0;">${x.name} — ${x.event}</p>`).join('')
+        : `<p class="text-muted">Нет записей.</p>`;
     });
 
-    // ===== Filters =====
-    searchInput.addEventListener('input', ()=> renderBooks(searchInput.value, genreFilter.value));
-    genreFilter.addEventListener('change', ()=> renderBooks(searchInput.value, genreFilter.value));
+    // === Рекомендации ===
+    document.getElementById('getRec').addEventListener('click', () => {
+      const g = recGenre.value;
+      const list = sampleBooks.filter(b => b.genre === g);
+      if (!list.length) {
+        recResult.innerHTML = `<p class="text-muted">Нет рекомендаций по жанру «${g}».</p>`;
+        return;
+      }
+      const pick = list[Math.floor(Math.random() * list.length)];
+      const coverLetters = pick.title.split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('');
+      recResult.innerHTML = `
+        <div class="book" style="animation: none;">
+          <div class="cover">${coverLetters}</div>
+          <div class="meta">
+            <h4>${escapeHtml(pick.title)}</h4>
+            <p>${escapeHtml(pick.author)} • ${pick.year} • <span class="pill">${pick.genre}</span></p>
+          </div>
+        </div>`;
+    });
 
-    // ===== Init on load =====
-    (function init(){
-      populateGenreControls();
-      renderBooks();
+    // === Фильтры ===
+    searchInput.addEventListener('input', () => renderBooks(searchInput.value, genreFilter.value));
+    genreFilter.addEventListener('change', () => renderBooks(searchInput.value, genreFilter.value));
+
+    // === 🧪 Экспорт / Импорт ===
+    exportBtn?.addEventListener('click', () => {
+      const data = {
+        borrowed: getBorrowed(),
+        events: getEvents(),
+        timestamp: new Date().toISOString(),
+        version: 'lib-demo-v3'
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `library-data-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Данные экспортированы');
+    });
+
+    importInput?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (data.borrowed) {
+            setBorrowed(data.borrowed);
+          }
+          if (data.events) {
+            localStorage.setItem(EVENT_KEY, JSON.stringify(data.events));
+            updateStats();
+          }
+          renderBorrowed();
+          showToast('Данные импортированы');
+        } catch (err) {
+          showToast('Ошибка импорта: неверный формат', 'warn');
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = ''; // reset for repeat upload
+    });
+
+    // === Инициализация ===
+    window.addEventListener('DOMContentLoaded', () => {
+      initGenreSelects();
+      updateStats(); // сразу обновляем статистику
+      setTimeout(() => {
+        if (booksList.querySelector('.skeleton')) booksList.innerHTML = '';
+        renderBooks();
+      }, 500);
       renderBorrowed();
-      // preselect recGenre first item if present
-      if(recGenre.options.length>0) recGenre.selectedIndex = 0;
-    })();
+    });
 
-    // ===== Utility: make file ready for GitHub Pages =====
-    // Для публикации: просто положите этот файл в корень репозитория как index.html и включите Pages.
+    clearBorrowed.addEventListener('click', () => {
+      if (confirm('Очистить все записи о выданных книгах?')) {
+        setBorrowed([]);
+        renderBorrowed();
+        showToast('Данные сброшены');
+      }
+    });
   </script>
 </body>
 </html>
