@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BiBlio · Современная библиотека</title>
-  <meta name="description" content="Современный цифровой интерфейс библиотеки. Никаких выезжающих меню — только плавные, интуитивные взаимодействия." />
+  <title>BiBlio · Библиотека</title>
+  <meta name="description" content="Современный интерфейс библиотеки: каталог, рекомендации, личный кабинет. Никаких выезжающих элементов — только плавные переходы." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ===== ULTRA-MODERN STYLES — glass + neumorphism fusion ===== */
+    /* ===== ULTRA-MODERN STYLES — 3-page layout ===== */
     :root {
       --spacing-xs: 4px;
       --spacing-s: 8px;
@@ -20,14 +20,13 @@
       --radius-m: 12px;
       --radius-l: 16px;
       
-      /* Градиенты по времени суток (утро → день → вечер) */
       --bg-gradient: linear-gradient(120deg, oklch(98% 0.005 220), oklch(99% 0.008 260));
       --card-bg: oklch(100% 0 0 / 85%);
       --card-bg-dark: oklch(15% 0.005 240 / 88%);
       --text: oklch(18% 0.02 240);
       --text-muted: oklch(40% 0.01 240);
       --border: oklch(85% 0.01 240 / 40%);
-      --accent: oklch(65% 0.2 260); /* сине-фиолетовый, мягкий */
+      --accent: oklch(65% 0.2 260);
       --accent-hover: oklch(60% 0.22 260);
       --success: oklch(60% 0.18 140);
       --danger: oklch(65% 0.2 20);
@@ -51,7 +50,6 @@
       color: var(--text);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
     .container {
@@ -60,7 +58,7 @@
       padding: var(--spacing-l);
     }
 
-    /* ===== HEADER — glass panel, no motion ===== */
+    /* ===== HEADER — фиксированный, с навигацией ===== */
     header {
       background: var(--card-bg);
       backdrop-filter: blur(30px);
@@ -69,16 +67,13 @@
       border-radius: var(--radius-l);
       padding: var(--spacing-l);
       margin-bottom: var(--spacing-xl);
-      box-shadow: 
-        0 4px 20px oklch(0% 0 0 / 0.02),
-        0 0 0 1px oklch(100% 0 0 / 0.05);
+      position: sticky;
+      top: var(--spacing-l);
+      z-index: 10;
     }
     @media (prefers-color-scheme: dark) {
       header {
         background: var(--card-bg-dark);
-        box-shadow: 
-          0 4px 20px oklch(0% 0 0 / 0.2),
-          0 0 0 1px oklch(0% 0 0 / 0.1);
       }
     }
 
@@ -101,7 +96,7 @@
       color: transparent;
     }
 
-    /* Статистика — микро-бары */
+    /* Статистика */
     .stats {
       display: flex;
       gap: var(--spacing-l);
@@ -110,7 +105,7 @@
     .stat {
       display: flex;
       flex-direction: column;
-      min-width: 140px;
+      min-width: 120px;
     }
     .stat-label {
       font-size: 0.875rem;
@@ -119,51 +114,61 @@
     }
     .stat-value {
       font-weight: 600;
-      font-size: 1.25rem;
-    }
-    .stat-bar {
-      height: 4px;
-      background: oklch(90% 0.01 240 / 0.3);
-      border-radius: 2px;
-      margin-top: var(--spacing-xs);
-      overflow: hidden;
-    }
-    .stat-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+      font-size: 1.125rem;
     }
 
-    /* ===== MAIN GRID ===== */
-    main {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: var(--spacing-l);
+    /* ===== NAV — табы ===== */
+    .nav-tabs {
+      display: flex;
+      gap: var(--spacing-s);
+      margin-top: var(--spacing-m);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--spacing-s);
     }
-    @media (max-width: 900px) {
-      main { grid-template-columns: 1fr; }
+    .nav-link {
+      padding: var(--spacing-s) var(--spacing-m);
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-s) var(--radius-s) 0 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-link.active {
+      color: var(--accent);
+      background: oklch(95% 0 0 / 60%);
+      border: 1px solid var(--border);
+      border-bottom: none;
+    }
+    @media (prefers-color-scheme: dark) {
+      .nav-link.active { background: oklch(20% 0 0 / 40%); }
     }
 
-    /* ===== CARDS — glass neumorphism ===== */
+    /* ===== PAGES — переключение ===== */
+    .page {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== CONTENT BLOCKS ===== */
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: var(--radius-m);
       padding: var(--spacing-l);
-      box-shadow: 
-        0 2px 12px oklch(0% 0 0 / 0.01),
-        0 0 0 1px oklch(100% 0 0 / 0.03);
+      margin-bottom: var(--spacing-l);
     }
     @media (prefers-color-scheme: dark) {
       .card {
         background: var(--card-bg-dark);
-        box-shadow: 
-          0 2px 12px oklch(0% 0 0 / 0.1),
-          inset 0 0.5px 0 oklch(100% 0 0 / 0.05);
       }
     }
 
@@ -171,17 +176,6 @@
       font-weight: 700;
       font-size: 1.375rem;
       margin: 0 0 var(--spacing-m);
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-s);
-    }
-    h2::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 24px;
-      border-radius: 3px;
-      background: var(--accent);
     }
 
     .text-muted {
@@ -190,14 +184,16 @@
       margin: 0 0 var(--spacing-m);
     }
 
-    /* ===== FILTERS — iOS-style segmented control ===== */
+    /* Фильтры */
     .filters {
       display: flex;
       gap: var(--spacing-s);
       margin-bottom: var(--spacing-l);
+      flex-wrap: wrap;
     }
     .filter-btn {
       flex: 1;
+      min-width: 100px;
       padding: var(--spacing-s) var(--spacing-m);
       background: oklch(95% 0 0 / 60%);
       border: 1px solid var(--border);
@@ -217,7 +213,7 @@
       border-color: transparent;
     }
 
-    /* ===== INPUTS — clean, no borders by default ===== */
+    /* Инпуты */
     .input-group {
       display: flex;
       gap: var(--spacing-s);
@@ -233,7 +229,7 @@
       border: 1px solid transparent;
       background: oklch(98% 0 0 / 70%);
       color: var(--text);
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s;
     }
     @media (prefers-color-scheme: dark) {
       input, select { background: oklch(20% 0 0 / 50%); }
@@ -244,7 +240,7 @@
       background: var(--card-bg);
     }
 
-    /* ===== BOOK ITEMS — Apple Books style ===== */
+    /* Книги */
     .book-list {
       display: flex;
       flex-direction: column;
@@ -257,16 +253,10 @@
       border-radius: var(--radius-s);
       background: oklch(97% 0 0 / 50%);
       transition: transform 0.2s;
-      cursor: default;
     }
     @media (prefers-color-scheme: dark) {
       .book { background: oklch(22% 0 0 / 40%); }
     }
-    .book:hover {
-      transform: translateY(-1px);
-    }
-
-    /* Генеративные обложки — уникальные градиенты по ID */
     .cover {
       width: 72px;
       height: 100px;
@@ -280,6 +270,13 @@
       color: white;
       text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
+    .cover-1 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    .cover-2 { background: linear-gradient(135deg, #ec4899, #be185d); }
+    .cover-3 { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+    .cover-4 { background: linear-gradient(135deg, #10b981, #059669); }
+    .cover-5 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .cover-6 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .cover-7 { background: linear-gradient(135deg, #0891b2, #0e7490); }
 
     .meta {
       flex: 1;
@@ -309,7 +306,7 @@
       .genre-pill { background: oklch(30% 0 0 / 50%); }
     }
 
-    /* Кнопки — pseudo-3D effect */
+    /* Кнопки */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -321,15 +318,11 @@
       border: none;
       cursor: pointer;
       transition: all 0.15s ease;
-      box-shadow: 
-        inset 0 -2px 0 oklch(0% 0 0 / 0.1),
-        0 1px 2px oklch(0% 0 0 / 0.05);
+      box-shadow: inset 0 -2px 0 oklch(0% 0 0 / 0.1);
     }
     .btn:active {
       transform: translateY(1px);
-      box-shadow: 
-        inset 0 1px 0 oklch(0% 0 0 / 0.1),
-        0 0 1px oklch(0% 0 0 / 0.05);
+      box-shadow: inset 0 1px 0 oklch(0% 0 0 / 0.1);
     }
     .btn-primary {
       background: var(--accent);
@@ -350,22 +343,43 @@
       color: var(--danger);
     }
 
-    /* Акцентные действия — инлайн, сверху */
-    .actions {
-      display: flex;
-      gap: var(--spacing-s);
-      margin-bottom: var(--spacing-l);
-      flex-wrap: wrap;
+    /* Списки */
+    .list-empty {
+      color: var(--text-muted);
+      text-align: center;
+      padding: var(--spacing-l);
     }
 
-    /* Список записей — компактный */
-    .event-item, .borrowed-item {
-      font-size: 0.875rem;
-      padding: var(--spacing-s) 0;
-      border-bottom: 1px solid var(--border);
+    /* Форма записи */
+    .event-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-m);
     }
-    .event-item:last-child, .borrowed-item:last-child {
-      border-bottom: none;
+    .form-row {
+      display: flex;
+      gap: var(--spacing-s);
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--text);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 500;
+      box-shadow: 0 6px 20px oklch(0% 0 0 / 0.2);
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 1000;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     footer {
@@ -381,20 +395,11 @@
       font-family: monospace;
     }
 
-    /* Focus для доступности */
-    button:focus-visible, input:focus-visible, select:focus-visible {
+    /* Focus */
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
-
-    /* Генеративные обложки — CSS-only */
-    .cover-1 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-    .cover-2 { background: linear-gradient(135deg, #ec4899, #be185d); }
-    .cover-3 { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
-    .cover-4 { background: linear-gradient(135deg, #10b981, #059669); }
-    .cover-5 { background: linear-gradient(135deg, #f59e0b, #d97706); }
-    .cover-6 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-    .cover-7 { background: linear-gradient(135deg, #0891b2, #0e7490); }
   </style>
 </head>
 <body>
@@ -402,37 +407,33 @@
     <header>
       <div class="header-top">
         <div class="logo">BiBlio</div>
-        <div class="actions">
-          <button class="btn btn-secondary" id="exportBtn">📤 Экспорт</button>
-          <label class="btn btn-secondary" style="cursor: pointer;">
-            📤 Импорт
-            <input type="file" id="importInput" accept=".json" style="display: none;">
-          </label>
-        </div>
       </div>
       <div class="stats">
         <div class="stat">
-          <span class="stat-label">Всего книг</span>
+          <span class="stat-label">Книг</span>
           <span class="stat-value" id="stat-total">7</span>
-          <div class="stat-bar"><div class="stat-fill" id="fill-total" style="width: 100%"></div></div>
         </div>
         <div class="stat">
           <span class="stat-label">Выдано</span>
           <span class="stat-value" id="stat-borrowed">0</span>
-          <div class="stat-bar"><div class="stat-fill" id="fill-borrowed" style="width: 0%"></div></div>
         </div>
         <div class="stat">
           <span class="stat-label">Записей</span>
           <span class="stat-value" id="stat-events">0</span>
-          <div class="stat-bar"><div class="stat-fill" id="fill-events" style="width: 0%"></div></div>
         </div>
       </div>
+      <nav class="nav-tabs">
+        <a href="#books" class="nav-link active" data-page="books">📚 Каталог</a>
+        <a href="#recommend" class="nav-link" data-page="recommend">🎯 Рекомендации</a>
+        <a href="#profile" class="nav-link" data-page="profile">👤 Профиль</a>
+      </nav>
     </header>
 
-    <main>
-      <section class="card">
-        <h2>Каталог</h2>
-        <p class="text-muted">Найдите книгу. Фильтруйте по жанру или ищите по названию.</p>
+    <!-- Страница 1: Каталог -->
+    <section id="page-books" class="page active">
+      <div class="card">
+        <h2>Каталог книг</h2>
+        <p class="text-muted">Найдите книгу по названию, автору или жанру.</p>
 
         <div class="filters">
           <button class="filter-btn active" data-genre="">Все</button>
@@ -448,47 +449,78 @@
         <div class="book-list" id="booksList">
           <!-- Книги рендерятся сюда -->
         </div>
-      </section>
+      </div>
+    </section>
 
-      <aside>
-        <div class="card">
-          <h2>Моя карточка</h2>
-          <p class="text-muted">Выданные книги и записи на события.</p>
+    <!-- Страница 2: Рекомендации -->
+    <section id="page-recommend" class="page">
+      <div class="card">
+        <h2>Персональные рекомендации</h2>
+        <p class="text-muted">Мы подберём книгу на основе ваших предпочтений.</p>
 
-          <div class="actions">
-            <button class="btn btn-secondary" id="viewBorrowedBtn">Книги</button>
-            <button class="btn btn-danger" id="clearBorrowed">Очистить</button>
-          </div>
-
-          <div id="borrowedList">
-            <p class="text-muted">У вас нет выданных книг.</p>
-          </div>
+        <div class="input-group">
+          <select id="recGenre">
+            <option value="Классика">Классика</option>
+            <option value="Современная проза">Современная проза</option>
+            <option value="Приключения">Приключения</option>
+            <option value="Техническая литература">Техника</option>
+          </select>
+          <button class="btn btn-primary" id="getRec">Подобрать</button>
         </div>
 
-        <div class="card" style="margin-top: var(--spacing-l);">
-          <h2>Рекомендации</h2>
-          <p class="text-muted">Выберите жанр — и получите подборку.</p>
+        <div class="book-list" id="recResult">
+          <div class="list-empty">Выберите жанр и нажмите «Подобрать»</div>
+        </div>
+      </div>
+    </section>
 
-          <div class="input-group">
-            <select id="recGenre">
-              <option value="Классика">Классика</option>
-              <option value="Современная проза">Современная проза</option>
-              <option value="Приключения">Приключения</option>
-              <option value="Техническая литература">Техника</option>
+    <!-- Страница 3: Профиль -->
+    <section id="page-profile" class="page">
+      <div class="card">
+        <h2>Выданные книги</h2>
+        <div class="actions" style="display:flex;gap:var(--spacing-s);margin-bottom:var(--spacing-m);">
+          <button class="btn btn-danger" id="clearBorrowed">Очистить всё</button>
+        </div>
+        <div class="book-list" id="borrowedList">
+          <div class="list-empty">У вас нет выданных книг</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Запись на события</h2>
+        <p class="text-muted">Зарегистрируйтесь на ближайшие мероприятия.</p>
+
+        <form class="event-form" id="eventForm">
+          <div class="form-row">
+            <input type="text" id="visitorName" placeholder="Ваше имя" required>
+          </div>
+          <div class="form-row">
+            <select id="eventSelect" style="flex:1;">
+              <option>Авторская встреча: «Современная проза» — 2025-12-01</option>
+              <option>Детский час: мастер-класс — 2025-12-05</option>
+              <option>Лекция: История книги — 2026-01-15</option>
             </select>
-            <button class="btn btn-primary" id="getRec">Подобрать</button>
+            <button type="submit" class="btn btn-primary">Записаться</button>
           </div>
+        </form>
 
-          <div id="recResult"></div>
+        <div style="margin-top: var(--spacing-l);">
+          <h3 style="font-size:1.125rem;margin:var(--spacing-m) 0;">Мои записи</h3>
+          <div id="eventList">
+            <div class="list-empty">Нет записей</div>
+          </div>
         </div>
-      </aside>
-    </main>
+      </div>
+    </section>
 
     <footer>
-      BiBlio · Демо-библиотека. Все данные хранятся только в вашем браузере.  
+      BiBlio · Современная библиотека. Все данные — только в вашем браузере.  
       <br>Для GitHub Pages: сохраните как <code>index.html</code>.
     </footer>
   </div>
+
+  <!-- Toast -->
+  <div id="toast" role="alert"></div>
 
   <script>
     // Данные
@@ -507,25 +539,27 @@
     const EVENTS_KEY = 'biblio_events';
 
     // DOM
+    const pages = {
+      books: document.getElementById('page-books'),
+      recommend: document.getElementById('page-recommend'),
+      profile: document.getElementById('page-profile')
+    };
+    const navLinks = document.querySelectorAll('.nav-link');
     const booksList = document.getElementById('booksList');
     const searchInput = document.getElementById('searchInput');
     const recGenre = document.getElementById('recGenre');
     const recResult = document.getElementById('recResult');
     const borrowedList = document.getElementById('borrowedList');
-    const viewBorrowedBtn = document.getElementById('viewBorrowedBtn');
+    const eventForm = document.getElementById('eventForm');
+    const eventList = document.getElementById('eventList');
     const clearBorrowed = document.getElementById('clearBorrowed');
-    const exportBtn = document.getElementById('exportBtn');
-    const importInput = document.getElementById('importInput');
     const statTotal = document.getElementById('stat-total');
     const statBorrowed = document.getElementById('stat-borrowed');
     const statEvents = document.getElementById('stat-events');
-    const fillBorrowed = document.getElementById('fill-borrowed');
-    const fillEvents = document.getElementById('fill-events');
+    const toast = document.getElementById('toast');
 
     // Утилиты
     const escape = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'<','>':'>','"':'&quot;',"'":"&#39;"})[m]);
-
-    // Генерация обложки (буквы + класс)
     const getCoverClass = id => `cover-${((id - 1) % 7) + 1}`;
     const getCoverLetters = title => title.split(' ').slice(0,2).map(w => w[0]?.toUpperCase() || '').join('');
 
@@ -535,6 +569,7 @@
       const letters = getCoverLetters(b.title);
       const btnText = isBorrowed ? 'Вернуть' : 'Выдать';
       const btnClass = isBorrowed ? 'btn-danger' : 'btn-primary';
+      const action = isBorrowed ? 'return' : 'borrow';
       return `
         <div class="book">
           <div class="cover ${coverClass}">${letters}</div>
@@ -546,20 +581,24 @@
               <span class="genre-pill">${b.genre}</span>
             </div>
           </div>
-          <button class="btn ${btnClass} action-btn" data-id="${b.id}" data-action="${isBorrowed ? 'return' : 'borrow'}">
+          <button class="btn ${btnClass} action-btn" data-id="${b.id}" data-action="${action}">
             ${btnText}
           </button>
         </div>
       `;
     };
 
-    // Рендер списка
+    // Рендер книг
     const renderBooks = (list = books) => {
+      if (list.length === 0) {
+        booksList.innerHTML = `<div class="list-empty">Книг не найдено</div>`;
+        return;
+      }
       booksList.innerHTML = list.map(b => renderBook(b)).join('');
       attachHandlers();
     };
 
-    // Обработчики кнопок
+    // Обработчики
     const attachHandlers = () => {
       document.querySelectorAll('.action-btn').forEach(btn => {
         btn.onclick = () => {
@@ -587,6 +626,7 @@
         arr.push(id);
         setBorrowed(arr);
         showToast('Книга выдана');
+        renderBorrowed();
       }
     };
 
@@ -595,29 +635,45 @@
       arr = arr.filter(x => x !== id);
       setBorrowed(arr);
       showToast('Книга возвращена');
+      renderBorrowed();
     };
 
-    // Показ выданных
+    // Рендер выданных
     const renderBorrowed = () => {
       const ids = getBorrowed();
       if (!ids.length) {
-        borrowedList.innerHTML = `<p class="text-muted">У вас нет выданных книг.</p>`;
+        borrowedList.innerHTML = `<div class="list-empty">У вас нет выданных книг</div>`;
         return;
       }
       const list = ids.map(id => books.find(b => b.id === id)).filter(Boolean);
-      borrowedList.innerHTML = list.map(b => `
-        <div class="book" style="padding:8px 12px;">
-          <div class="cover ${getCoverClass(b.id)}" style="width:48px;height:64px;font-size:14px;">${getCoverLetters(b.title)}</div>
+      borrowedList.innerHTML = list.map(b => renderBook(b, true)).join('');
+      attachHandlers();
+    };
+
+    // События
+    const getEvents = () => JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]');
+    const setEvents = arr => {
+      localStorage.setItem(EVENTS_KEY, JSON.stringify(arr));
+      updateStats();
+    };
+
+    // Рендер событий
+    const renderEvents = () => {
+      const arr = getEvents();
+      if (!arr.length) {
+        eventList.innerHTML = `<div class="list-empty">Нет записей</div>`;
+        return;
+      }
+      eventList.innerHTML = arr.map(x => `
+        <div class="book" style="padding:8px 12px;background:oklch(97% 0 0 / 50%);">
           <div class="meta">
-            <div class="title" style="font-size:0.95rem;">${escape(b.title)}</div>
+            <div class="title" style="font-size:0.95rem;">${escape(x.event)}</div>
             <div class="details" style="font-size:0.75rem;">
-              <span>${escape(b.author)}</span>
+              <span>${escape(x.name)}</span>
             </div>
           </div>
-          <button class="btn btn-danger action-btn" data-id="${b.id}" data-action="return" style="padding:4px 10px;font-size:0.8rem;">Вернуть</button>
         </div>
       `).join('');
-      attachHandlers();
     };
 
     // Статистика
@@ -629,37 +685,59 @@
       statTotal.textContent = total;
       statBorrowed.textContent = borrowed;
       statEvents.textContent = events;
-      
-      fillBorrowed.style.width = `${Math.min(100, borrowed / total * 100)}%`;
-      fillEvents.style.width = `${Math.min(100, events / 5 * 100)}%`; // 5 — условный лимит
     };
 
-    // События (упрощённо — без формы, только статистика)
-    const getEvents = () => JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]');
-    const setEvents = arr => {
-      localStorage.setItem(EVENTS_KEY, JSON.stringify(arr));
-      updateStats();
+    // Переключение страниц
+    const showPage = (pageId) => {
+      // Скрываем все
+      Object.values(pages).forEach(p => p.classList.remove('active'));
+      // Показываем нужную
+      pages[pageId].classList.add('active');
+      // Обновляем навигацию
+      navLinks.forEach(link => {
+        if (link.dataset.page === pageId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // Обновляем URL
+      history.pushState({ page: pageId }, '', `#${pageId}`);
     };
 
-    // Рекомендации
-    document.getElementById('getRec').addEventListener('click', () => {
-      const genre = recGenre.value;
-      const candidates = books.filter(b => b.genre === genre);
-      if (!candidates.length) {
-        recResult.innerHTML = `<p class="text-muted">Нет книг в жанре «${genre}»</p>`;
-        return;
-      }
-      const book = candidates[Math.floor(Math.random() * candidates.length)];
-      recResult.innerHTML = renderBook(book);
-      attachHandlers();
+    // Обработка кликов по навигации
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage(link.dataset.page);
+      });
     });
 
-    // Фильтры
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const genre = btn.dataset.genre;
+    // Обработка back/forward
+    window.addEventListener('popstate', (e) => {
+      const page = (e.state?.page) || 'books';
+      showPage(page);
+    });
+
+    // Фильтры каталога
+    const setupFilters = () => {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const genre = btn.dataset.genre;
+          const q = searchInput.value.toLowerCase();
+          const filtered = books.filter(b => 
+            (!genre || b.genre === genre) && 
+            (b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
+          );
+          renderBooks(filtered);
+        });
+      });
+
+      searchInput.addEventListener('input', () => {
+        const activeBtn = document.querySelector('.filter-btn.active');
+        const genre = activeBtn?.dataset.genre || '';
         const q = searchInput.value.toLowerCase();
         const filtered = books.filter(b => 
           (!genre || b.genre === genre) && 
@@ -667,102 +745,75 @@
         );
         renderBooks(filtered);
       });
-    });
+    };
 
-    searchInput.addEventListener('input', () => {
-      const activeBtn = document.querySelector('.filter-btn.active');
-      const genre = activeBtn?.dataset.genre || '';
-      const q = searchInput.value.toLowerCase();
-      const filtered = books.filter(b => 
-        (!genre || b.genre === genre) && 
-        (b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
-      );
-      renderBooks(filtered);
-    });
-
-    // Экспорт/импорт
-    exportBtn.addEventListener('click', () => {
-      const data = {
-        borrowed: getBorrowed(),
-        events: getEvents(),
-        version: 'biblio-v1',
-        exportedAt: new Date().toISOString()
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `biblio-data-${new Date().toJSON().slice(0,10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('Данные экспортированы');
-    });
-
-    importInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const data = JSON.parse(reader.result);
-          if (Array.isArray(data.borrowed)) {
-            setBorrowed(data.borrowed);
-            renderBorrowed();
-          }
-          showToast('Данные импортированы');
-        } catch (err) {
-          alert('Ошибка импорта: неверный JSON');
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
-    });
-
-    // Toast (простой, без выезда — fade only)
-    const showToast = (msg) => {
-      if (window.toastEl) {
-        clearTimeout(window.toastId);
-        document.body.removeChild(window.toastEl);
+    // Рекомендации
+    document.getElementById('getRec').addEventListener('click', () => {
+      const genre = recGenre.value;
+      const candidates = books.filter(b => b.genre === genre);
+      if (!candidates.length) {
+        recResult.innerHTML = `<div class="list-empty">Нет книг в жанре «${genre}»</div>`;
+        return;
       }
-      const el = document.createElement('div');
-      el.style.cssText = `
-        position: fixed; top: 20px; right: 20px; 
-        background: var(--text); color: white; padding: 12px 20px; 
-        border-radius: 12px; font-weight: 500; 
-        box-shadow: 0 6px 20px oklch(0% 0 0 / 0.2);
-        opacity: 0; transform: translateX(20px); 
-        transition: opacity 0.3s, transform 0.3s;
-        z-index: 1000;
-      `;
-      el.textContent = msg;
-      document.body.appendChild(el);
-      window.toastEl = el;
-      setTimeout(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateX(0)';
-      }, 10);
-      window.toastId = setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(20px)';
-        setTimeout(() => {
-          if (el.parentNode) el.parentNode.removeChild(el);
-          window.toastEl = null;
-        }, 300);
-      }, 2000);
+      const book = candidates[Math.floor(Math.random() * candidates.length)];
+      recResult.innerHTML = renderBook(book);
+      attachHandlers();
+    });
+
+    // Форма событий
+    eventForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('visitorName').value.trim();
+      const ev = document.getElementById('eventSelect').value;
+      if (!name) {
+        showToast('Введите имя', 'warn');
+        return;
+      }
+      const arr = getEvents();
+      arr.push({ name, event: ev, time: new Date().toISOString() });
+      setEvents(arr);
+      document.getElementById('visitorName').value = '';
+      renderEvents();
+      showToast('Вы записаны!');
+    });
+
+    // Очистка
+    clearBorrowed.addEventListener('click', () => {
+      if (confirm('Очистить все выданные книги?')) {
+        setBorrowed([]);
+        renderBorrowed();
+        showToast('Очищено');
+      }
+    });
+
+    // Toast
+    const showToast = (msg, type = 'success') => {
+      toast.textContent = msg;
+      toast.className = `show`;
+      if (type === 'warn') {
+        toast.style.background = 'var(--danger)';
+      } else {
+        toast.style.background = 'var(--text)';
+      }
+      setTimeout(() => toast.classList.remove('show'), 2500);
     };
 
     // Инициализация
     window.addEventListener('DOMContentLoaded', () => {
+      // Обработка прямого URL (#recommend)
+      const hash = window.location.hash.slice(1) || 'books';
+      showPage(hash);
+
+      // Данные
       updateStats();
+      
+      // Каталог
       renderBooks();
-      viewBorrowedBtn.addEventListener('click', renderBorrowed);
-      clearBorrowed.addEventListener('click', () => {
-        if (confirm('Очистить все данные?')) {
-          setBorrowed([]);
-          renderBorrowed();
-          showToast('Очищено');
-        }
-      });
+      setupFilters();
+
+      // Профиль
+      renderBorrowed();
+      renderEvents();
     });
   </script>
 </body>
